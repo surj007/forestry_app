@@ -1,28 +1,81 @@
-<style lang="less" scoped>
-
+<style scoped>
+.ig-register {
+  font-family: 'SourceHanSansSC-regular';
+  color: #01B6AF;
+  font-size: 16px;
+}
+.ig-register-wrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  padding-right: 20px;
+  margin-top: 20px;
+}
+.btn {
+  width: 330px;
+}
+.btn-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+.img {
+  width: 144px;
+  height: 132px;
+}
+.img-wrapper {
+  display: flex;
+  justify-content: center;
+  height: 132px;
+  margin-top: 17px;
+  margin-bottom: 45px;
+}
+.forget {
+  font-family: 'SourceHanSansSC-regular';
+  color: #01B6AF;
+  font-size: 12px;
+}
+.forget-wrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  padding-right: 20px;
+  margin-top: 15px;
+  margin-bottom: 95px;
+}
 </style>
 <style>
-.active {
-  opacity: 0.5!important;
-}
 </style>
 
 <template>
   <div class="login">
-    <van-button @touchstart.native.stop="picture">
-      拍照
-    </van-button>
+    <div class="ig-register-wrapper">
+      <a href="javascript: void(0);" class="ig-register">注册</a>
+    </div>
 
-    <van-button @touchstart.native.stop="galleryImgs">
-      选照片
-    </van-button>
+    <div class="img-wrapper">
+      <img src="../../assets/loginTree.png" alt="" class="img" />
+    </div>
 
-    <div v-for="(item, index) in imgArr">
-      <img :src="item" alt="" style="width: 100px;height: 100px;" @touchstart.stop.prevent="choose(item.split('/')[item.split('/').length - 1])" :class="{ active: isActive[item.split('/')[item.split('/').length - 1]] }">
-      <br />
-      {{ JSON.parse(store.getItem(item.split('/')[item.split('/').length - 1])).time }}
-      <br />
-      {{ JSON.parse(store.getItem(item.split('/')[item.split('/').length - 1])).position }}
+    
+    <van-cell-group>
+      <van-field label="手机号" left-icon="phone-o" />
+    </van-cell-group>
+
+    <van-cell-group>
+      <van-field label="登录密码" left-icon="bag-o" right-icon="closed-eye" />
+    </van-cell-group>
+
+    <div class="forget-wrapper">
+      <a href="javascript: void(0);" class="forget">忘记密码</a>
+    </div>
+    
+    <div class="btn-wrapper">
+      <div class="btn">
+        <van-button size="large" round type="primary">登陆</van-button>
+      </div>
+    </div>
+
+    <div class="btn-wrapper">
+      <a href="javascript: void(0);" class="forget">短信验证码登录</a>
     </div>
   </div>
 </template>
@@ -31,61 +84,15 @@
 export default {
   name: 'Login',
   created() {
-    document.addEventListener('plusready', () => {
-      this.store = plus.storage;
-    }, false);
+    
   },
   data() {
     return {
-      imgArr: [],
-      isActive: {},
-      store: {}
+      
     }
   },
   methods: {
-    picture() {
-      let camera = plus.camera.getCamera();
-      camera.captureImage((capturedFile) => {
-        this.position((p) => {
-          let key = capturedFile.split('/')[1];
-          this.store.setItem(key, JSON.stringify({position: p}));
-        });
-      }, 
-      (err) => {}, 
-      {
-        
-      });
-    },
-    galleryImgs() {
-      this.imgArr = [];
-      let isActive = {};
-      plus.io.resolveLocalFileSystemURL('_doc', (entry) => {
-        let reader = entry.createReader();
-        reader.readEntries((subFiles) => {
-          for (let i = 0; i < subFiles.length; i++) {
-            this.imgArr.push(subFiles[i].fullPath);
-            isActive[subFiles[i].name] = false;
-            plus.io.resolveLocalFileSystemURL(`_doc/${subFiles[i].name}`, (entry1) => {
-              entry1.getMetadata((metadata) => {
-                let o = this.store.getItem(entry1.name);
-                let o1 = JSON.parse(o);
-                o1.time = metadata.modificationTime.toLocaleString();
-                this.store.setItem(entry1.name, JSON.stringify(o1));
-              });
-            });
-          }
-          this.isActive = isActive;
-        });
-      });
-    },
-    position(cb) {
-      plus.geolocation.getCurrentPosition((position) => {
-        cb(position.coords);
-      });
-    },
-    choose(item) {
-      this.isActive[item] = !this.isActive[item];
-    }
+    
   }
 }
 </script>

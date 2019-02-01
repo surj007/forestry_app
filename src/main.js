@@ -6,6 +6,7 @@ import App from './App';
 import router from './router';
 import store from './store';
 import './importUI';
+import './libs/lib-flexible';
 
 import './styles/normalize.css';
 import './styles/style.less';
@@ -22,15 +23,17 @@ Vue.prototype.$http = axios.create({
 
 Vue.prototype.$cookie = Cookie;
 
-new Vue({
-  el: '#app',
-  router,
-  store,
-  components: { App },
-  template: '<App/>',
-  data() {
-    return {
-      bus: new Vue()
+//document.addEventListener('plusready', () => {
+  new Vue({
+    el: '#app',
+    router,
+    store,
+    components: { App },
+    template: '<App/>',
+    data() {
+      return {
+        bus: new Vue()
+      }
     }
-  }
-});
+  });
+//});
