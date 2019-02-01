@@ -2,15 +2,13 @@
 
 </style>
 <style>
-
+.active {
+  opacity: 0.5!important;
+}
 </style>
 
 <template>
   <div class="login">
-    <van-button @touchstart.native.stop="show = true">
-      弹出默认键盘
-    </van-button>
-
     <van-button @touchstart.native.stop="picture">
       拍照
     </van-button>
@@ -19,66 +17,74 @@
       选照片
     </van-button>
 
-    <van-button @touchstart.native.stop="position">
-      定位
-    </van-button>
-
-    <van-number-keyboard
-      :show="show"
-      extra-key="."
-      close-button-text="完成"
-      @blur="show = false"
-      @input="onInput"
-      @delete="onDelete"
-    />
+    <div v-for="(item, index) in imgArr">
+      <img :src="item" alt="" style="width: 100px;height: 100px;" @touchstart.stop.prevent="choose(item.split('/')[item.split('/').length - 1])" :class="{ active: isActive[item.split('/')[item.split('/').length - 1]] }">
+      <br />
+      {{ JSON.parse(store.getItem(item.split('/')[item.split('/').length - 1])).time }}
+      <br />
+      {{ JSON.parse(store.getItem(item.split('/')[item.split('/').length - 1])).position }}
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Login',
+  created() {
+    document.addEventListener('plusready', () => {
+      this.store = plus.storage;
+    }, false);
+  },
   data() {
     return {
-      show: true
+      imgArr: [],
+      isActive: {},
+      store: {}
     }
   },
   methods: {
-    onInput(value) {
-      this.$toast(value);
-    },
-    onDelete() {
-      this.$toast('delete');
-    },
     picture() {
-      let cmr = plus.camera.getCamera();
-      cmr.captureImage(function(p) {
-        plus.io.resolveLocalFileSystemURL(p, function(entry) {
-          compressImage(entry.toLocalURL(),entry.name);
-        }, function(e) {
-          plus.nativeUI.toast("读取拍照文件错误：" + e.message);
+      let camera = plus.camera.getCamera();
+      camera.captureImage((capturedFile) => {
+        this.position((p) => {
+          let key = capturedFile.split('/')[1];
+          this.store.setItem(key, JSON.stringify({position: p}));
         });
-      }, function(e) {
-      }, {
-        filter: 'image'
+      }, 
+      (err) => {}, 
+      {
+        
       });
     },
     galleryImgs() {
-      plus.gallery.pick(function(e) {
-        let name = e.substr(e.lastIndexOf('/') + 1);
-        compressImage(e,name);
-      }, function(e) {
-      }, {
-        filter: "image"
+      this.imgArr = [];
+      let isActive = {};
+      plus.io.resolveLocalFileSystemURL('_doc', (entry) => {
+        let reader = entry.createReader();
+        reader.readEntries((subFiles) => {
+          for (let i = 0; i < subFiles.length; i++) {
+            this.imgArr.push(subFiles[i].fullPath);
+            isActive[subFiles[i].name] = false;
+            plus.io.resolveLocalFileSystemURL(`_doc/${subFiles[i].name}`, (entry1) => {
+              entry1.getMetadata((metadata) => {
+                let o = this.store.getItem(entry1.name);
+                let o1 = JSON.parse(o);
+                o1.time = metadata.modificationTime.toLocaleString();
+                this.store.setItem(entry1.name, JSON.stringify(o1));
+              });
+            });
+          }
+          this.isActive = isActive;
+        });
       });
     },
-    position() {
-      plus.geolocation.getCurrentPosition(function(p){
-        alert('Geolocation\nLatitude:' + p.coords.latitude + '\nLongitude:' + p.coords.longitude + '\nAltitude:' + p.coords.altitude);
-        console.log('Geolocation info: ' + JSON.stringify(p));
-        this.$toast(JSON.stringify(p.coords));
-      }, function(e){
-        console.log('Gelocation Error: code - ' + e.code + '; message - ' + e.message);
-      } );
+    position(cb) {
+      plus.geolocation.getCurrentPosition((position) => {
+        cb(position.coords);
+      });
+    },
+    choose(item) {
+      this.isActive[item] = !this.isActive[item];
     }
   }
 }
