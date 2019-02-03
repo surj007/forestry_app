@@ -84,7 +84,23 @@
 export default {
   name: 'Login',
   created() {
-    
+    this.$http({
+          url: '/test/hello',
+          method: 'GET',
+          // headers: {
+          //   'Content-Type': 'application/x-www-form-urlencoded',
+          // },
+          // data: this.$qs.stringify({
+          //   username: "srj",
+          //   password: "123456"
+          // }),
+        }).then((res) => {
+          console.log(1);
+          console.log(res)
+        }, (res) => {
+          console.log(2);
+          console.log(res)
+        });
   },
   data() {
     return {

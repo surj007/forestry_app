@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios'
 import Cookie from 'js-cookie';
+import qs from 'qs';
 
 import App from './App';
 import router from './router';
@@ -20,7 +21,7 @@ Vue.prototype.$http = axios.create({
     'Cache-Control': 'no-cache'
   }
 });
-
+Vue.prototype.$qs = qs;
 Vue.prototype.$cookie = Cookie;
 
 //document.addEventListener('plusready', () => {

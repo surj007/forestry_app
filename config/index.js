@@ -18,6 +18,13 @@ module.exports = {
           '^/auth': '/auth'
         }
       },
+      '/test': {
+        target: 'http://localhost',
+        changeOrigin: true,  
+        pathRewrite: {
+          '^/test': '/test'
+        }
+      },
     },
 
     // Various Dev Server settings
