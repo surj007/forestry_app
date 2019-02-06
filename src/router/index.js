@@ -11,6 +11,11 @@ export default new Router({
       component: () => import('../views/Login')
     },
     {
+      path: '/resetPwd',
+      name: 'resetPwd',
+      component: () => import('../views/ResetPwd')
+    },
+    {
       path: '*',
       redirect: '/login'
     }

@@ -10,7 +10,7 @@ import './importUI';
 import './libs/lib-flexible';
 
 import './styles/normalize.css';
-import './styles/style.less';
+import './styles/style.css';
 
 Vue.config.productionTip = false;
 

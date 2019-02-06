@@ -11,25 +11,18 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/auth': {
-        target: 'http://localhost',
+      '/': {
+        target: 'http://localhost:8089',
         changeOrigin: true,  
         pathRewrite: {
           '^/auth': '/auth'
         }
-      },
-      '/test': {
-        target: 'http://localhost',
-        changeOrigin: true,  
-        pathRewrite: {
-          '^/test': '/test'
-        }
-      },
+      }
     },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 8088, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
