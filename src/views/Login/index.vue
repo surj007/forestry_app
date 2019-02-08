@@ -54,7 +54,7 @@
 <template>
   <div class="login">
     <div class="register-wrapper">
-      <a href="javascript: void(0);" class="register">注册</a>
+      <a href="javascript: void(0);" class="register" @click="skipNewPath('register')">注册</a>
     </div>
 
     <div class="img-wrapper">
@@ -84,7 +84,7 @@
     </van-cell-group>
 
     <div class="forget-wrapper" v-if="oLoginFormData.sLoginType == 'password'">
-      <a href="javascript: void(0);" class="forget" @click="forgetPwd">忘记密码</a>
+      <a href="javascript: void(0);" class="forget" @click="skipNewPath('resetPwd')">忘记密码</a>
     </div>
     <div class="forget-wrapper" style="height: 13px;" v-if="oLoginFormData.sLoginType == 'code'"></div>
      
@@ -213,8 +213,8 @@ export default {
     changeShowPwd() {
       this.bShowPwd = !this.bShowPwd;
     },
-    forgetPwd() {
-      this.$router.push({name: 'resetPwd'});
+    skipNewPath(path) {
+      this.$router.push({name: path});
     }
   }
 }

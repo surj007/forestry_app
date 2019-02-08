@@ -14,3 +14,6 @@ Vue.use(Field);
 
 import { Cell, CellGroup } from 'vant';
 Vue.use(Cell).use(CellGroup);
+
+import { Dialog } from 'vant';
+Vue.use(Dialog);
