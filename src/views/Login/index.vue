@@ -42,7 +42,7 @@
 }
 .btn {
   padding: 0 15px 0 15px;
-  margin-top: 90px;
+  margin-top: 84px;
 }
 .login-type {
   display: flex;
@@ -61,7 +61,7 @@
       <img src="../../assets/loginTree.png" alt="" class="img" />
     </div>
 
-    <van-cell-group class="van-hairline--bottom" :border="false" style="margin-bottom: 20px;">
+    <van-cell-group class="van-hairline--bottom" :border="false" style="margin-bottom: 30px;">
       <van-field placeholder="请输入手机号" left-icon="phone-o" 
       type="number" :error-message="oErrMsg.sUsernameErrMsg"
       v-model="oLoginFormData.sUsername" @blur="handleUsernameInputBlur">
@@ -137,7 +137,7 @@ export default {
 
       this.$store.dispatch('login', {oLoginFormData: this.oLoginFormData, oVm: this});
     },
-    getCode(callback) {
+    getCode(fCallback) {
       this.$http({
         url: '/auth/getCode4Login',
         method: 'GET',
@@ -147,14 +147,14 @@ export default {
       }).then((res) => {
         if(res.data.code == 0) {
           this.$toast.success('验证码已发送');
-          callback && callback();
+          fCallback && fCallback();
         }
         else {
           this.$toast.fail(res.data.message);
         }
       }).catch((e) => {
         console.log('getCode: ' + e);
-        this.$toast('获取验证码错误，请联系管理员');
+        this.$toast('获取验证码错误，请重试');
       });
     },
     sendCode() {
@@ -193,17 +193,17 @@ export default {
         this.oErrMsg.sPasswordErrMsg = '';
       }
     },
-    changeLoginType(type) {
+    changeLoginType(sType) {
       this.oLoginFormData = {
         sUsername: '',
         sPassword: '',
-        sLoginType: type
+        sLoginType: sType
       };
       this.oErrMsg = {
         sUsernameErrMsg: '',
         sPasswordErrMsg: ''
       }
-      if(this.nSecond != 0 && type == 'code') {
+      if(this.nSecond != 0 && sType == 'code') {
         this.$nextTick(() => {
           document.querySelectorAll('#sendCodeBtn')[0].style['pointer-events'] = 'none';
           document.querySelectorAll('#sendCodeBtn')[0].style.color = '#ccc';
@@ -213,8 +213,8 @@ export default {
     changeShowPwd() {
       this.bShowPwd = !this.bShowPwd;
     },
-    skipNewPath(path) {
-      this.$router.push({name: path});
+    skipNewPath(sPath) {
+      this.$router.push({name: sPath});
     }
   }
 }

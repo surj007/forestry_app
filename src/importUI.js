@@ -17,3 +17,6 @@ Vue.use(Cell).use(CellGroup);
 
 import { Dialog } from 'vant';
 Vue.use(Dialog);
+
+import { Icon } from 'vant';
+Vue.use(Icon);

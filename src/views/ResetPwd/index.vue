@@ -37,7 +37,7 @@
 }
 .btn {
   padding: 0 15px 0 15px;
-  margin-top: 49px;
+  margin-top: 53px;
 }
 </style>
 
@@ -167,11 +167,11 @@ export default {
           this.$toast.fail(res.data.message);
         }
       }).catch((e) => {
-        console.log('submit: ' + e);
-        this.$toast('修改密码错误，请联系管理员');
+        console.log('resetPwd submit: ' + e);
+        this.$toast('修改密码错误，请重试');
       });
     },
-    getCode(callback) {
+    getCode(fCallback) {
       this.$http({
         url: '/auth/getCode4RegAndResetPwd',
         method: 'GET',
@@ -182,14 +182,14 @@ export default {
       }).then((res) => {
         if(res.data.code == 0) {
           this.$toast.success('验证码已发送');
-          callback && callback();
+          fCallback && fCallback();
         }
         else {
           this.$toast.fail(res.data.message);
         }
       }).catch((e) => {
         console.log('getCode: ' + e);
-        this.$toast('获取验证码错误，请联系管理员');
+        this.$toast('获取验证码错误，请重试');
       });
     },
     sendCode() {
@@ -212,12 +212,12 @@ export default {
         });
       }
     },
-    handleInputBlur(inputName) {
-      if(this.oLoginFormData[inputName] == '') {
-        this.oErrMsg[inputName + 'ErrMsg'] = '此项不能为空';
+    handleInputBlur(sInputName) {
+      if(this.oLoginFormData[sInputName] == '') {
+        this.oErrMsg[sInputName + 'ErrMsg'] = '此项不能为空';
       }
       else {
-        this.oErrMsg[inputName + 'ErrMsg'] = '';
+        this.oErrMsg[sInputName + 'ErrMsg'] = '';
       }
     },
     changeShowPwd() {

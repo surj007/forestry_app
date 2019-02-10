@@ -35,7 +35,7 @@ export default new Vuex.Store({
           }
         }).catch((e) => {
           console.log('login: ' + e);
-          oVm.$toast('登陆错误，请联系管理员');
+          oVm.$toast('登陆错误，请重试');
         });
       });
     }

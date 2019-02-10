@@ -9,7 +9,8 @@
 }
 .login-wrapper {
   display: flex;
-  flex-direction: row-reverse;
+  justify-content: space-between;
+  padding-left: 12px;
   padding-right: 19px;
   margin-top: 13px;
 }
@@ -21,7 +22,8 @@
   display: flex;
   justify-content: center;
   height: 132px;
-  margin-top: 18px;
+  margin-top: 13px;
+  margin-bottom: 20px;
 }
 .text {
   font-family: 'SourceHanSansSC-regular';
@@ -40,15 +42,25 @@
     margin-top: 20px;
   }
 }
-.btn {
+.btn-confirm {
   padding: 0 15px 0 15px;
-  margin-top: 90px;
+  margin-top: 106px;
+}
+.send-code {
+  font-family: 'SourceHanSansSC-regular';
+  color: #01B6AF;
+  font-size: 14px;
+}
+.btn-reg {
+  padding: 0 15px 0 15px;
+  margin-top: 37px;
 }
 </style>
 
 <template>
   <div class="register">
     <div class="login-wrapper">
+      <van-icon name="arrow-left" size="23px" :color="sBackIcon" @click="goback(sBackIcon)" />
       <a href="javascript: void(0);" class="login" @click="skipNewPath('login')">登陆</a>
     </div>
 
@@ -67,13 +79,38 @@
         <a href="javascript: void(0);" @click="confirmDownload('promise')">下载《承诺书》</a>
       </div>
 
-      <div class="btn change-button-background">
-        <van-button size="large" round type="primary" @click="sComponent = 'form'">已下载</van-button>
+      <div class="btn-confirm change-button-background">
+        <van-button size="large" round type="primary" @click="goForm">已下载</van-button>
       </div>
     </div>
 
     <div class="form-component" v-if="sComponent == 'form'">
-      
+      <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 40px;margin-bottom: 30px;">
+        <van-field placeholder="请输入手机号" left-icon="phone-o" 
+        type="number" :error-message="oErrMsg.sUsernameErrMsg"
+        v-model="oLoginFormData.sUsername" @blur="handleInputBlur('sUsername')">
+          <span slot="button" style="color: transparent;">1</span>
+        </van-field>
+      </van-cell-group>
+
+      <van-cell-group class="van-hairline--bottom" :border="false" style="margin-bottom: 30px;">
+        <van-field placeholder="登录密码（6-18位、数字组合）" left-icon="bag-o" :right-icon="bShowPwd ? 'closed-eye' : 'eye-o'"
+        :error-message="oErrMsg.sPasswordErrMsg" @click-right-icon="changeShowPwd"
+        :type="bShowPwd ? '' : 'password'" v-model="oLoginFormData.sPassword" @blur="handleInputBlur('sPassword')" />
+      </van-cell-group>
+
+      <van-cell-group class="van-hairline--bottom" :border="false">
+        <van-field placeholder="短信验证码" left-icon="label-o" type="number"
+        :error-message="oErrMsg.sCodeErrMsg" @blur="handleInputBlur('sCode')" v-model="oLoginFormData.sCode">
+          <a id="sendCodeBtn" slot="button" href="javascript: void(0);" class="send-code" @click="sendCode">
+            {{ sSendCodeContent }}
+          </a>
+        </van-field>
+      </van-cell-group>
+
+      <div class="btn-reg change-button-background">
+        <van-button size="large" round type="primary" @click="submit">注册</van-button>
+      </div>
     </div>
   </div>
 </template>
@@ -81,14 +118,120 @@
 <script>
 export default {
   name: 'Register',
+  computed: {
+    sBackIcon() {
+      return this.sComponent == 'info' ? 'transparent' : ''
+    }
+  },
   data() {
     return {
-      sComponent: 'info'
+      bShowPwd: false,
+      sComponent: 'info',
+      sSendCodeContent: '发送验证码',
+      nSecond: 0,
+      oErrMsg: {
+        sUsernameErrMsg: '',
+        sPasswordErrMsg: '',
+        sCodeErrMsg: ''
+      },
+      oLoginFormData: {
+        sUsername: '',
+        sPassword: '',
+        sCode: ''
+      }
     }
   },
   methods: {
-    confirmDownload(type) {
-      this.savePic2SysGallery(type);
+    submit() {
+      let flag = false;
+      if(this.oLoginFormData.sUsername == '') {
+        this.oErrMsg.sUsernameErrMsg = '此项不能为空';
+        flag = true;
+      }
+      if(this.oLoginFormData.sPassword == '') {
+        this.oErrMsg.sPasswordErrMsg = '此项不能为空';
+        flag = true;
+      }
+      if(this.oLoginFormData.sCode == '') {
+        this.oErrMsg.sCodeErrMsg = '此项不能为空';
+        flag = true;
+      }
+      if(flag) {
+        return;
+      }
+
+      this.$http({
+        url: '/auth/regUser',
+        method: 'POST',
+        data: {
+          username: this.oLoginFormData.sUsername,
+          password: this.oLoginFormData.sPassword,
+          code: this.oLoginFormData.sCode
+        }
+      }).then((res) => {
+        if(res.data.code == 0) {
+          this.$toast.success('注册成功，请登陆');
+          this.skipNewPath('login');
+        }
+        else {
+          this.$toast.fail(res.data.message);
+        }
+      }).catch((e) => {
+        console.log('register submit: ' + e);
+        this.$toast('注册错误，请重试');
+      });
+    },
+    getCode(fCallback) {
+      this.$http({
+        url: '/auth/getCode4RegAndResetPwd',
+        method: 'GET',
+        params: {
+          phone: this.oLoginFormData.sUsername,
+          type: 'reg'
+        }
+      }).then((res) => {
+        if(res.data.code == 0) {
+          this.$toast.success('验证码已发送');
+          fCallback && fCallback();
+        }
+        else {
+          this.$toast.fail(res.data.message);
+        }
+      }).catch((e) => {
+        console.log('getCode: ' + e);
+        this.$toast('获取验证码错误，请重试');
+      });
+    },
+    sendCode() {
+      this.handleInputBlur('sUsername');
+      if(this.oErrMsg.sUsernameErrMsg == '') {
+        this.getCode(() => {
+          this.nSecond = 60;
+          document.querySelectorAll('#sendCodeBtn')[0].style['pointer-events'] = 'none';
+          document.querySelectorAll('#sendCodeBtn')[0].style.color = '#ccc'; 
+          this.sSendCodeContent = this.nSecond + '秒后重新发送验证码';
+          let timer = setInterval(() => {
+            this.sSendCodeContent = --this.nSecond + '秒后重新发送验证码';
+            if(this.nSecond == 0) {
+              clearInterval(timer);
+              document.querySelectorAll('#sendCodeBtn')[0] && (document.querySelectorAll('#sendCodeBtn')[0].style['pointer-events'] = 'auto');
+              document.querySelectorAll('#sendCodeBtn')[0] && (document.querySelectorAll('#sendCodeBtn')[0].style.color = '#01B6AF');
+              this.sSendCodeContent = '发送验证码';
+            }
+          }, 1000);
+        });
+      }
+    },
+    handleInputBlur(sInputName) {
+      if(this.oLoginFormData[sInputName] == '') {
+        this.oErrMsg[sInputName + 'ErrMsg'] = '此项不能为空';
+      }
+      else {
+        this.oErrMsg[sInputName + 'ErrMsg'] = '';
+      }
+    },
+    confirmDownload(sType) {
+      this.savePic2SysGallery(sType);
       this.$dialog.confirm({
         title: '提示',
         message: '已自动保存至手机相册',
@@ -100,11 +243,28 @@ export default {
         window.plus.gallery.pick();
       });
     },
-    savePic2SysGallery(type) {
-      window.plus.gallery.save(`_www/image/${type}.png`);
+    changeShowPwd() {
+      this.bShowPwd = !this.bShowPwd;
     },
-    skipNewPath(path) {
-      this.$router.push({name: path});
+    savePic2SysGallery(sType) {
+      window.plus.gallery.save(`_www/image/${sType}.png`);
+    },
+    skipNewPath(sPath) {
+      this.$router.push({name: sPath});
+    },
+    goForm() {
+      this.sComponent = 'form';
+      if(this.nSecond != 0) {
+        this.$nextTick(() => {
+          document.querySelectorAll('#sendCodeBtn')[0].style['pointer-events'] = 'none';
+          document.querySelectorAll('#sendCodeBtn')[0].style.color = '#ccc';
+        }); 
+      }
+    },
+    goback(sFlag) {
+      if(!sFlag) {
+        this.sComponent = 'info';
+      }
     }
   }
 }
