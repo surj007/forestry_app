@@ -42,9 +42,13 @@
     margin-top: 20px;
   }
 }
+.agree-text {
+  font-family: 'SourceHanSansSC-regular';
+  font-size: 12px;
+}
 .btn-confirm {
   padding: 0 15px 0 15px;
-  margin-top: 106px;
+  margin-top: 94px;
 }
 .send-code {
   font-family: 'SourceHanSansSC-regular';
@@ -53,7 +57,7 @@
 }
 .btn-reg {
   padding: 0 15px 0 15px;
-  margin-top: 37px;
+  margin-top: 55px;
 }
 </style>
 
@@ -82,10 +86,17 @@
       <div class="btn-confirm change-button-background">
         <van-button size="large" round type="primary" @click="goForm">已下载</van-button>
       </div>
+
+      <p class="agree-text flex-center-x" style="color: #999999;margin-top: 17px;">
+        注册即视为同意
+        <a href="javascript: void(0);" class="agree-text" style="color: #01B6AF;">
+          《用户服务协议》
+        </a>
+      </p>
     </div>
 
     <div class="form-component" v-if="sComponent == 'form'">
-      <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 40px;margin-bottom: 30px;">
+      <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 30px;margin-bottom: 20px;">
         <van-field placeholder="请输入手机号" left-icon="phone-o" 
         type="number" :error-message="oErrMsg.sUsernameErrMsg"
         v-model="oLoginFormData.sUsername" @blur="handleInputBlur('sUsername')">
@@ -93,7 +104,7 @@
         </van-field>
       </van-cell-group>
 
-      <van-cell-group class="van-hairline--bottom" :border="false" style="margin-bottom: 30px;">
+      <van-cell-group class="van-hairline--bottom" :border="false" style="margin-bottom: 20px;">
         <van-field placeholder="登录密码（6-18位、数字组合）" left-icon="bag-o" :right-icon="bShowPwd ? 'closed-eye' : 'eye-o'"
         :error-message="oErrMsg.sPasswordErrMsg" @click-right-icon="changeShowPwd"
         :type="bShowPwd ? '' : 'password'" v-model="oLoginFormData.sPassword" @blur="handleInputBlur('sPassword')" />
@@ -143,20 +154,20 @@ export default {
   },
   methods: {
     submit() {
-      let flag = false;
+      let bFlag = false;
       if(this.oLoginFormData.sUsername == '') {
         this.oErrMsg.sUsernameErrMsg = '此项不能为空';
-        flag = true;
+        bFlag = true;
       }
       if(this.oLoginFormData.sPassword == '') {
         this.oErrMsg.sPasswordErrMsg = '此项不能为空';
-        flag = true;
+        bFlag = true;
       }
       if(this.oLoginFormData.sCode == '') {
         this.oErrMsg.sCodeErrMsg = '此项不能为空';
-        flag = true;
+        bFlag = true;
       }
-      if(flag) {
+      if(bFlag) {
         return;
       }
 
@@ -178,7 +189,7 @@ export default {
         }
       }).catch((e) => {
         console.log('register submit: ' + e);
-        this.$toast('注册错误，请重试');
+        this.$toast('网络错误，请重试');
       });
     },
     getCode(fCallback) {
@@ -198,8 +209,8 @@ export default {
           this.$toast.fail(res.data.message);
         }
       }).catch((e) => {
-        console.log('getCode: ' + e);
-        this.$toast('获取验证码错误，请重试');
+        console.error('register getCode: ' + e);
+        this.$toast('网络错误，请重试');
       });
     },
     sendCode() {
@@ -210,10 +221,10 @@ export default {
           document.querySelectorAll('#sendCodeBtn')[0].style['pointer-events'] = 'none';
           document.querySelectorAll('#sendCodeBtn')[0].style.color = '#ccc'; 
           this.sSendCodeContent = this.nSecond + '秒后重新发送验证码';
-          let timer = setInterval(() => {
+          let nTimer = setInterval(() => {
             this.sSendCodeContent = --this.nSecond + '秒后重新发送验证码';
             if(this.nSecond == 0) {
-              clearInterval(timer);
+              clearInterval(nTimer);
               document.querySelectorAll('#sendCodeBtn')[0] && (document.querySelectorAll('#sendCodeBtn')[0].style['pointer-events'] = 'auto');
               document.querySelectorAll('#sendCodeBtn')[0] && (document.querySelectorAll('#sendCodeBtn')[0].style.color = '#01B6AF');
               this.sSendCodeContent = '发送验证码';

@@ -20,3 +20,12 @@ Vue.use(Dialog);
 
 import { Icon } from 'vant';
 Vue.use(Icon);
+
+import { NavBar } from 'vant';
+Vue.use(NavBar);
+
+import { Checkbox, CheckboxGroup } from 'vant';
+Vue.use(Checkbox).use(CheckboxGroup);
+
+import { Row, Col } from 'vant';
+Vue.use(Row).use(Col);

@@ -5,16 +5,20 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    oUserInfo: {}
+    oUserInfo: {},
+    oCompanyInfo: {}
   },
   mutations: {
     setUserInfo(state, data) {
       state.oUserInfo = data;
-    }
+    },
+    setCompanyInfo(state, data) {
+      state.oCompanyInfo = data;
+    },
   },
   actions: {
-    login(context, {oLoginFormData, oVm}) {
-      return new Promise((resolve) => {
+    login(context, { oLoginFormData, oVm }) {
+      return new Promise((resolve, reject) => {
         oVm.$http({
           url: '/auth/login',
           method: 'POST',
@@ -22,7 +26,7 @@ export default new Vuex.Store({
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           data: oVm.$qs.stringify({
-            username: `${oLoginFormData.sUsername}&${oLoginFormData.sLoginType}`,
+            username: `${oLoginFormData.sUsername}-@_${oLoginFormData.sLoginType}`,
             password: oLoginFormData.sPassword
           })
         }).then((res) => {
@@ -32,10 +36,33 @@ export default new Vuex.Store({
           }
           else {
             oVm.$toast.fail(res.data.message);
+            reject();
           }
         }).catch((e) => {
           console.log('login: ' + e);
-          oVm.$toast('登陆错误，请重试');
+          oVm.$toast('网络错误，请重试');
+          reject();
+        });
+      });
+    },
+    getCompanyInfo(context, oVm) {
+      return new Promise((resolve, reject) => {
+        oVm.$http({
+          url: '/company/getCompany',
+          method: 'GET'
+        }).then((res) => {
+          if(res.data.code == 0) {
+            context.commit('setCompanyInfo', res.data.data);
+            resolve();
+          }
+          else {
+            oVm.$toast.fail(res.data.message);
+            reject();
+          }
+        }).catch((e) => {
+          console.log('getCompanyInfo: ' + e);
+          oVm.$toast('网络错误，请重试');
+          reject();
         });
       });
     }

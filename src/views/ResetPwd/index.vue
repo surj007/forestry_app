@@ -28,7 +28,7 @@
   justify-content: center;
   height: 132px;
   margin-top: 18px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 .send-code {
   font-family: 'SourceHanSansSC-regular';
@@ -37,7 +37,7 @@
 }
 .btn {
   padding: 0 15px 0 15px;
-  margin-top: 53px;
+  margin-top: 48px;
 }
 </style>
 
@@ -63,19 +63,19 @@
         </van-field>
       </van-cell-group>
 
-      <van-cell-group class="van-hairline--bottom" :border="false">
+      <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
         <van-field placeholder="请输入新密码（6-18位、数字组合）" left-icon="bag-o" :right-icon="bShowPwd ? 'closed-eye' : 'eye-o'"
         :error-message="oErrMsg.sPasswordErrMsg" @click-right-icon="changeShowPwd"
         :type="bShowPwd ? '' : 'password'" v-model="oLoginFormData.sPassword" @blur="handleInputBlur('sPassword')" />
       </van-cell-group>
-      <van-cell-group class="van-hairline--bottom" :border="false">
+      <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
         <van-field placeholder="请再次输入新密码" left-icon="bag-o" :error-message="oErrMsg.sConfirmPasswordErrMsg"
         :type="bShowPwd ? '' : 'password'" v-model="oLoginFormData.sConfirmPassword" @blur="handleInputBlur('sConfirmPassword')">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
 
-      <van-cell-group class="van-hairline--bottom" :border="false">
+      <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
         <van-field placeholder="短信验证码" left-icon="label-o" type="number"
         :error-message="oErrMsg.sCodeErrMsg" @blur="handleInputBlur('sCode')" v-model="oLoginFormData.sCode">
           <a id="sendCodeBtn" slot="button" href="javascript: void(0);" class="send-code" @click="sendCode">
@@ -125,24 +125,24 @@ export default {
   },
   methods: {
     submit() {
-      let flag = false;
+      let bFlag = false;
       if(this.oLoginFormData.sUsername == '') {
         this.oErrMsg.sUsernameErrMsg = '此项不能为空';
-        flag = true;
+        bFlag = true;
       }
       if(this.oLoginFormData.sPassword == '') {
         this.oErrMsg.sPasswordErrMsg = '此项不能为空';
-        flag = true;
+        bFlag = true;
       }
       if(this.oLoginFormData.sConfirmPassword == '') {
         this.oErrMsg.sConfirmPasswordErrMsg = '此项不能为空';
-        flag = true;
+        bFlag = true;
       }
       if(this.oLoginFormData.sCode == '') {
         this.oErrMsg.sCodeErrMsg = '此项不能为空';
-        flag = true;
+        bFlag = true;
       }
-      if(flag) {
+      if(bFlag) {
         return;
       }
 
@@ -167,8 +167,8 @@ export default {
           this.$toast.fail(res.data.message);
         }
       }).catch((e) => {
-        console.log('resetPwd submit: ' + e);
-        this.$toast('修改密码错误，请重试');
+        console.error('resetPwd submit: ' + e);
+        this.$toast('网络错误，请重试');
       });
     },
     getCode(fCallback) {
@@ -188,8 +188,8 @@ export default {
           this.$toast.fail(res.data.message);
         }
       }).catch((e) => {
-        console.log('getCode: ' + e);
-        this.$toast('获取验证码错误，请重试');
+        console.error('resetPwd getCode: ' + e);
+        this.$toast('网络错误，请重试');
       });
     },
     sendCode() {
@@ -200,10 +200,10 @@ export default {
           document.querySelectorAll('#sendCodeBtn')[0].style['pointer-events'] = 'none';
           document.querySelectorAll('#sendCodeBtn')[0].style.color = '#ccc'; 
           this.sSendCodeContent = this.nSecond + '秒后重新发送验证码';
-          let timer = setInterval(() => {
+          let nTimer = setInterval(() => {
             this.sSendCodeContent = --this.nSecond + '秒后重新发送验证码';
             if(this.nSecond == 0) {
-              clearInterval(timer);
+              clearInterval(nTimer);
               document.querySelectorAll('#sendCodeBtn')[0] && (document.querySelectorAll('#sendCodeBtn')[0].style['pointer-events'] = 'auto');
               document.querySelectorAll('#sendCodeBtn')[0] && (document.querySelectorAll('#sendCodeBtn')[0].style.color = '#01B6AF');
               this.sSendCodeContent = '发送验证码';

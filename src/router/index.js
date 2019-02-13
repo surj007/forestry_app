@@ -21,6 +21,11 @@ export default new Router({
       component: () => import('../views/Register')
     },
     {
+      path: '/setCompanyInfo',
+      name: 'setCompanyInfo',
+      component: () => import('../views/SetCompanyInfo')
+    },
+    {
       path: '*',
       redirect: '/login'
     }
