@@ -69,37 +69,42 @@
       <p class="title">企业基本信息</p>
 
       <van-cell-group class="van-hairline--bottom" :border="false">
-        <van-field label="企业名称" placeholder="请输入企业名称" required v-model="oFormData.name">
+        <van-field label="企业名称" placeholder="请输入企业名称" required 
+        v-model="oFormData.name" :error-message="oErrMsg.nameErrMsg" @blur="handleInputBlur('name', 'string')">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="企业法人" placeholder="请输入法人姓名" required v-model="oFormData.corporation">
+        <van-field label="企业法人" placeholder="请输入法人姓名" required v-model="oFormData.corporation" 
+        :error-message="oErrMsg.corporationErrMsg" @blur="handleInputBlur('corporation', 'string')">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="联系电话" placeholder="请输入联系电话" required v-model="oFormData.phone">
+        <van-field label="联系电话" placeholder="请输入联系电话" required v-model="oFormData.phone" 
+        :error-message="oErrMsg.phoneErrMsg" @blur="handleInputBlur('phone', 'string')">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="企业地址" placeholder="请输入企业地址" required v-model="oFormData.address">
+        <van-field label="企业地址" placeholder="请输入企业地址" required v-model="oFormData.address" 
+        :error-message="oErrMsg.addressErrMsg" @blur="handleInputBlur('address', 'string')">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="仓储地点" placeholder="请输入仓储地点，以逗号分隔" required type="textarea" rows="2" v-model="oFormData.store">
+        <van-field label="仓储地点" placeholder="请输入仓储地点，以逗号分隔" required type="textarea" rows="2" v-model="oFormData.store"
+        :error-message="oErrMsg.storeErrMsg" @blur="handleInputBlur('store', 'string')">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="企业类型" required disabled>
+        <van-field label="企业类型" required disabled :error-message="oErrMsg.companyTypeErrMsg" @blur="handleInputBlur('companyType', 'array')">
           <van-checkbox-group slot="button" style="display: flex;" v-model="oFormData.companyType">
             <van-checkbox style="margin-right: 15px;" name="木材加工" shape="square">木材加工</van-checkbox>
             <van-checkbox name="木材销售" shape="square">木材销售</van-checkbox>
@@ -108,7 +113,7 @@
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="原料来源" required disabled>
+        <van-field label="原料来源" required disabled :error-message="oErrMsg.sourceErrMsg" @blur="handleInputBlur('source', 'array')">
           <van-checkbox-group slot="button" v-model="oFormData.source">
             <van-checkbox style="margin-bottom: 7px;" name="太仓港口" shape="square">太仓港口</van-checkbox>
             <van-checkbox style="margin-bottom: 7px;" name="常熟港口" shape="square">常熟港口</van-checkbox>
@@ -128,7 +133,9 @@
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="（木材）原料主要品种" placeholder="请输入原料主要品种，以逗号分隔" required type="textarea" rows="2" v-model="oFormData.kind">
+        <van-field label="（木材）原料主要品种" placeholder="请输入原料主要品种，以逗号分隔" 
+        required type="textarea" rows="2" v-model="oFormData.kind" 
+        :error-message="oErrMsg.kindErrMsg" @blur="handleInputBlur('kind', 'string')">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
@@ -198,7 +205,7 @@
       </van-cell-group>
 
       <div class="btn-info change-button-background">
-        <van-button size="large" round type="primary" @click="sComponent = 'picture'">下一步</van-button>
+        <van-button size="large" round type="primary" @click="next">下一步</van-button>
       </div>
     </div>
 
@@ -219,7 +226,7 @@
         </van-cell-group>
 
         <div class="flex-space-between">
-          <p class="title-pic download-title">林业植物检疫监管告知书证</p>
+          <p class="title-pic download-title">林业植物检疫监管告知书</p>
           <p class="download download-title" @click="savePic2SysGallery('notice')">下载</p>
         </div>
         <van-cell-group class="van-hairline--bottom" :border="false" style="padding-bottom: 26px;">
@@ -251,7 +258,7 @@ export default {
   },
   data() {
     return {
-      sComponent: 'picture',
+      sComponent: 'info',
       oFormData: {
         id: 0,
         name: '',
@@ -277,11 +284,25 @@ export default {
         cardOppositePic: '',
         notificationPic: '',
         commitPic: ''
+      },
+      oErrMsg: {
+        nameErrMsg: '',
+        corporationErrMsg: '',
+        phoneErrMsg: '',
+        addressErrMsg: '',
+        storeErrMsg: '',
+        companyTypeErrMsg: '',
+        sourceErrMsg: '',
+        kindErrMsg: ''
       }
     }
   },
   methods: {
     submit() {
+      if(this.validatePicForm()) {
+        return;
+      }
+
       let data = JSON.parse(JSON.stringify(this.oFormData));
       data.companyType = data.companyType.toString();
       data.source = data.source.toString();
@@ -302,6 +323,86 @@ export default {
         console.error('setCompanyInfo submit: ' + e);
         this.$toast('网络错误，请重试');
       });
+    },
+    handleInputBlur(sInputName, type) {
+      if(type == 'string' && this.oFormData[sInputName] == '') {
+        this.oErrMsg[sInputName + 'ErrMsg'] = '此项不能为空';
+      }
+      else if(type == 'array' && this.oFormData[sInputName].length == 0) {
+        this.oErrMsg[sInputName + 'ErrMsg'] = '此项不能为空';
+      }
+      else {
+        this.oErrMsg[sInputName + 'ErrMsg'] = '';
+      }
+    },
+    validateInfoForm() {
+      let bFlag = false;
+      if(this.oFormData.name == '') {
+        this.oErrMsg.nameErrMsg = '此项不能为空';
+        bFlag = true;
+      }
+      if(this.oFormData.corporation == '') {
+        this.oErrMsg.corporationErrMsg = '此项不能为空';
+        bFlag = true;
+      }
+      if(this.oFormData.phone == '') {
+        this.oErrMsg.phoneErrMsg = '此项不能为空';
+        bFlag = true;
+      }
+      if(this.oFormData.address == '') {
+        this.oErrMsg.addressErrMsg = '此项不能为空';
+        bFlag = true;
+      }
+      if(this.oFormData.store == '') {
+        this.oErrMsg.storeErrMsg = '此项不能为空';
+        bFlag = true;
+      }
+      if(this.oFormData.companyType.length == 0) {
+        this.oErrMsg.companyTypeErrMsg = '此项不能为空';
+        bFlag = true;
+      }
+      if(this.oFormData.source.length == 0) {
+        this.oErrMsg.sourceErrMsg = '此项不能为空';
+        bFlag = true;
+      }
+      if(this.oFormData.kind == '') {
+        this.oErrMsg.kindErrMsg = '此项不能为空';
+        bFlag = true;
+      }
+
+
+      return bFlag;
+    },
+    validatePicForm() {
+      if(this.oFormData.licencePic == '') {
+        this.$toast('请提交企业营业执照照片');
+        return true;
+      }
+      if(this.oFormData.cardFrontPic == '') {
+        this.$toast('请提交法人身份证正反面照片');
+        return true;
+      }
+      if(this.oFormData.cardOppositePic == '') {
+        this.$toast('请提交法人身份证正反面照片');
+        return true;
+      }
+      if(this.oFormData.notificationPic == '') {
+        this.$toast('请提交林业植物检疫监管告知书照片');
+        return true;
+      }
+      if(this.oFormData.commitPic == '') {
+        this.$toast('请提交木材调运检疫开证承诺书照片');
+        return true;
+      }
+
+      return false;
+    },
+    next() {
+      if(this.validateInfoForm()) {
+        return;
+      }
+
+      this.sComponent = 'picture';
     },
     setLicencePictureUrl(sUrl) {
       this.oFormData.licencePic = sUrl;

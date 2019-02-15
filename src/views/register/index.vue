@@ -129,6 +129,9 @@
 <script>
 export default {
   name: 'Register',
+  beforeDestroy() {
+    clearInterval(this.nTimer);
+  },
   computed: {
     sBackIcon() {
       return this.sComponent == 'info' ? 'transparent' : ''
@@ -140,6 +143,7 @@ export default {
       sComponent: 'info',
       sSendCodeContent: '发送验证码',
       nSecond: 0,
+      nTimer: -1,
       oErrMsg: {
         sUsernameErrMsg: '',
         sPasswordErrMsg: '',
@@ -221,10 +225,10 @@ export default {
           document.querySelectorAll('#sendCodeBtn')[0].style['pointer-events'] = 'none';
           document.querySelectorAll('#sendCodeBtn')[0].style.color = '#ccc'; 
           this.sSendCodeContent = this.nSecond + '秒后重新发送验证码';
-          let nTimer = setInterval(() => {
+          this.nTimer = setInterval(() => {
             this.sSendCodeContent = --this.nSecond + '秒后重新发送验证码';
             if(this.nSecond == 0) {
-              clearInterval(nTimer);
+              clearInterval(this.nTimer);
               document.querySelectorAll('#sendCodeBtn')[0] && (document.querySelectorAll('#sendCodeBtn')[0].style['pointer-events'] = 'auto');
               document.querySelectorAll('#sendCodeBtn')[0] && (document.querySelectorAll('#sendCodeBtn')[0].style.color = '#01B6AF');
               this.sSendCodeContent = '发送验证码';

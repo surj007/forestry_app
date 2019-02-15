@@ -3,11 +3,11 @@ import axios from 'axios';
 
 window.cookie = null;
 
-// Vue.prototype.$http = axios.create({
-//   headers: {
-//     'Cache-Control': 'no-cache'
-//   }
-// });
+Vue.prototype.$http = axios.create({
+  headers: {
+    'Cache-Control': 'no-cache'
+  }
+});
 
 function plusHttpRequest(config) {
   return new Promise((resolve, reject) => {
@@ -73,4 +73,4 @@ function plusHttpRequest(config) {
   });
 }
 
-Vue.prototype.$http = plusHttpRequest;
+//Vue.prototype.$http = plusHttpRequest;
