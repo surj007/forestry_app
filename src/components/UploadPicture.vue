@@ -62,7 +62,7 @@ export default {
     },
     getOssSign(fCallback) {
       this.$http({
-        url: 'http://192.168.113.16/oss/getSign',
+        url: `${window.baseUrl}/oss/getSign`,
         method: 'GET',
         params: {
           path: 'app_company'
@@ -81,7 +81,7 @@ export default {
     },
     getSignatureUrl(oData, fCallback) {
       this.$http({
-        url: 'http://192.168.113.16/oss/getSignatureUrl',
+        url: `${window.baseUrl}/oss/getSignatureUrl`,
         method: 'GET',
         params: {
           path: oData.path,

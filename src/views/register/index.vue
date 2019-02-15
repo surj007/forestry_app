@@ -80,7 +80,7 @@
 
       <div class="link">
         <a href="javascript: void(0);" @click="confirmDownload('notice')">下载《林业植物检疫监管告知书》</a>
-        <a href="javascript: void(0);" @click="confirmDownload('promise')">下载《承诺书》</a>
+        <a href="javascript: void(0);" @click="confirmDownload('promise')">下载《木材调运检疫开证承诺书》</a>
       </div>
 
       <div class="btn-confirm change-button-background">

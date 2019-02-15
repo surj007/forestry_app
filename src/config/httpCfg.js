@@ -2,6 +2,7 @@ import Vue from 'vue';
 import axios from 'axios';
 
 window.cookie = null;
+window.baseUrl = 'http://localhost';
 
 Vue.prototype.$http = axios.create({
   headers: {
@@ -11,15 +12,14 @@ Vue.prototype.$http = axios.create({
 
 function plusHttpRequest(config) {
   return new Promise((resolve, reject) => {
-    let baseURL = 'http://192.168.113.16:8089';
     let xhr = new plus.net.XMLHttpRequest();
 
     xhr.onload = () => {
       if(config.url.indexOf('/auth/login') != -1) {
-        cookie = xhr.getResponseHeader("Set-Cookie");
+        window.cookie = xhr.getResponseHeader('Set-Cookie');
       }
 
-      if(xhr.response.message == '未登录') {
+      if(xhr.response.message == '请重新登陆') {
         vm.$router.push({name: 'login'});
       }
 
@@ -28,7 +28,7 @@ function plusHttpRequest(config) {
       });
     }
     xhr.onerror = (e) => {
-      reject(e);
+      reject('http err: ' + e);
     }
     xhr.ontimeout = (e) => {
       reject('time out');
@@ -46,7 +46,7 @@ function plusHttpRequest(config) {
     }
 
     if(config.url.indexOf('http') == -1) {
-      config.url = baseURL + config.url;
+      config.url = `${window.baseUrl}:8089` + config.url;
     }
 
     xhr.open(config.method, config.url);
@@ -60,8 +60,8 @@ function plusHttpRequest(config) {
       xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
     }
 
-    if(cookie) {
-      xhr.setRequestHeader('Cookie', cookie);
+    if(window.cookie) {
+      xhr.setRequestHeader('Cookie', window.cookie);
     }
 
     if(config.data) {

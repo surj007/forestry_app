@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import Cookie from 'js-cookie';
 import qs from 'qs';
 
 import App from './App';
@@ -15,9 +14,8 @@ import './styles/style.css';
 Vue.config.productionTip = false;
 
 Vue.prototype.$qs = qs;
-Vue.prototype.$cookie = Cookie;
 
-document.addEventListener('plusready', () => {
+//document.addEventListener('plusready', () => {
   window.vm = new Vue({
     el: '#app',
     router,
@@ -30,4 +28,4 @@ document.addEventListener('plusready', () => {
       }
     }
   });
-});
+//});

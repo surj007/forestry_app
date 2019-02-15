@@ -105,9 +105,10 @@
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
         <van-field label="企业类型" required disabled :error-message="oErrMsg.companyTypeErrMsg" @blur="handleInputBlur('companyType', 'array')">
-          <van-checkbox-group slot="button" style="display: flex;" v-model="oFormData.companyType">
-            <van-checkbox style="margin-right: 15px;" name="木材加工" shape="square">木材加工</van-checkbox>
-            <van-checkbox name="木材销售" shape="square">木材销售</van-checkbox>
+          <van-checkbox-group slot="button" v-model="oFormData.companyType">
+            <template v-for="item in $store.state.oBasicInfo.companyType">
+              <van-checkbox style="margin-bottom: 7px;" :name="item" shape="square">{{ item }}</van-checkbox>
+            </template>
           </van-checkbox-group>
         </van-field>
       </van-cell-group>
@@ -115,10 +116,9 @@
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
         <van-field label="原料来源" required disabled :error-message="oErrMsg.sourceErrMsg" @blur="handleInputBlur('source', 'array')">
           <van-checkbox-group slot="button" v-model="oFormData.source">
-            <van-checkbox style="margin-bottom: 7px;" name="太仓港口" shape="square">太仓港口</van-checkbox>
-            <van-checkbox style="margin-bottom: 7px;" name="常熟港口" shape="square">常熟港口</van-checkbox>
-            <van-checkbox style="margin-bottom: 7px;" name="上海港口" shape="square">上海港口</van-checkbox>
-            <van-checkbox name="本地企业" shape="square">本地企业</van-checkbox>
+            <template v-for="item in $store.state.oBasicInfo.source">
+              <van-checkbox style="margin-bottom: 7px;" :name="item" shape="square">{{ item }}</van-checkbox>
+            </template>
           </van-checkbox-group>
         </van-field>
       </van-cell-group>
@@ -279,11 +279,11 @@ export default {
         saleArea: '',
         saleMount: '',
         remark: '',
-        licencePic: '',
-        cardFrontPic: '',
-        cardOppositePic: '',
-        notificationPic: '',
-        commitPic: ''
+        licencePic: '1',
+        cardFrontPic: '1',
+        cardOppositePic: '1',
+        notificationPic: '1',
+        commitPic: '1'
       },
       oErrMsg: {
         nameErrMsg: '',

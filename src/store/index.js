@@ -6,7 +6,9 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     oUserInfo: {},
-    oCompanyInfo: {}
+    oCompanyInfo: {},
+    oBasicInfo: {},
+    oFileInfo: {}
   },
   mutations: {
     setUserInfo(state, data) {
@@ -15,6 +17,12 @@ export default new Vuex.Store({
     setCompanyInfo(state, data) {
       state.oCompanyInfo = data;
     },
+    setBasicInfo(state, data) {
+      state.oBasicInfo = data;
+    },
+    setFileInfo(state, data) {
+      state.oFileInfo = data;
+    }
   },
   actions: {
     login(context, { oLoginFormData, oVm }) {
@@ -61,6 +69,48 @@ export default new Vuex.Store({
           }
         }).catch((e) => {
           console.log('getCompanyInfo: ' + e);
+          oVm.$toast('网络错误，请重试');
+          reject();
+        });
+      });
+    },
+    getBasicInfo(context, oVm) {
+      return new Promise((resolve, reject) => {
+        oVm.$http({
+          url: `${window.baseUrl}/basic/getBasicInfo`,
+          method: 'GET'
+        }).then((res) => {
+          if(res.data.code == 0) {
+            context.commit('setBasicInfo', res.data.data);
+            resolve();
+          }
+          else {
+            oVm.$toast.fail(res.data.message);
+            reject();
+          }
+        }).catch((e) => {
+          console.log('getBasicInfo: ' + e);
+          oVm.$toast('网络错误，请重试');
+          reject();
+        });
+      });
+    },
+    getFileInfo(context, oVm) {
+      return new Promise((resolve, reject) => {
+        oVm.$http({
+          url: `${window.baseUrl}/basic/getFileInfo`,
+          method: 'GET'
+        }).then((res) => {
+          if(res.data.code == 0) {
+            context.commit('setFileInfo', res.data.data);
+            resolve();
+          }
+          else {
+            oVm.$toast.fail(res.data.message);
+            reject();
+          }
+        }).catch((e) => {
+          console.log('getFileInfo: ' + e);
           oVm.$toast('网络错误，请重试');
           reject();
         });
