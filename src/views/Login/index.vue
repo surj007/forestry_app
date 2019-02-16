@@ -147,7 +147,7 @@ export default {
         await this.$store.dispatch('getCompanyInfo', this);
       }
       catch(e) {
-        console.log('login then err: ' + e);
+        console.warn('login then err: ' + e);
       }
     
       if(this.$store.state.oCompanyInfo) {
@@ -173,8 +173,8 @@ export default {
           this.$toast.fail(res.data.message);
         }
       }).catch((e) => {
-        console.error('login getCode: ' + e);
-        this.$toast('网络错误，请重试');
+        console.warn('login getCode: ' + e);
+        this.$toast.fail('网络错误，请重试');
       });
     },
     sendCode() {

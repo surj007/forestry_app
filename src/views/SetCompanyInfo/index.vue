@@ -320,8 +320,8 @@ export default {
           this.$toast.fail(res.data.message);
         }
       }).catch((e) => {
-        console.error('setCompanyInfo submit: ' + e);
-        this.$toast('网络错误，请重试');
+        console.warn('setCompanyInfo submit: ' + e);
+        this.$toast.fail('网络错误，请重试');
       });
     },
     handleInputBlur(sInputName, type) {

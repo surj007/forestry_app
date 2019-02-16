@@ -151,7 +151,7 @@ export default {
       }
 
       if(this.oLoginFormData.sPassword != this.oLoginFormData.sConfirmPassword) {
-        this.$toast.fail('密码输入不一致');
+        this.$toast('密码输入不一致');
         return;
       }
 
@@ -171,8 +171,8 @@ export default {
           this.$toast.fail(res.data.message);
         }
       }).catch((e) => {
-        console.error('resetPwd submit: ' + e);
-        this.$toast('网络错误，请重试');
+        console.warn('resetPwd submit: ' + e);
+        this.$toast.fail('网络错误，请重试');
       });
     },
     getCode(fCallback) {
@@ -192,8 +192,8 @@ export default {
           this.$toast.fail(res.data.message);
         }
       }).catch((e) => {
-        console.error('resetPwd getCode: ' + e);
-        this.$toast('网络错误，请重试');
+        console.warn('resetPwd getCode: ' + e);
+        this.$toast.fail('网络错误，请重试');
       });
     },
     sendCode() {

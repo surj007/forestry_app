@@ -192,8 +192,8 @@ export default {
           this.$toast.fail(res.data.message);
         }
       }).catch((e) => {
-        console.log('register submit: ' + e);
-        this.$toast('网络错误，请重试');
+        console.warn('register submit: ' + e);
+        this.$toast.fail('网络错误，请重试');
       });
     },
     getCode(fCallback) {
@@ -213,8 +213,8 @@ export default {
           this.$toast.fail(res.data.message);
         }
       }).catch((e) => {
-        console.error('register getCode: ' + e);
-        this.$toast('网络错误，请重试');
+        console.warn('register getCode: ' + e);
+        this.$toast.fail('网络错误，请重试');
       });
     },
     sendCode() {

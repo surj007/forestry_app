@@ -47,8 +47,8 @@ export default new Vuex.Store({
             reject();
           }
         }).catch((e) => {
-          console.log('login: ' + e);
-          oVm.$toast('网络错误，请重试');
+          console.warn('login: ' + e);
+          oVm.$toast.fail('网络错误，请重试');
           reject();
         });
       });
@@ -68,8 +68,8 @@ export default new Vuex.Store({
             reject();
           }
         }).catch((e) => {
-          console.log('getCompanyInfo: ' + e);
-          oVm.$toast('网络错误，请重试');
+          console.warn('getCompanyInfo: ' + e);
+          oVm.$toast.fail('网络错误，请重试');
           reject();
         });
       });
@@ -89,8 +89,8 @@ export default new Vuex.Store({
             reject();
           }
         }).catch((e) => {
-          console.log('getBasicInfo: ' + e);
-          oVm.$toast('网络错误，请重试');
+          console.warn('getBasicInfo: ' + e);
+          oVm.$toast.fail('网络错误，请重试');
           reject();
         });
       });
@@ -110,8 +110,8 @@ export default new Vuex.Store({
             reject();
           }
         }).catch((e) => {
-          console.log('getFileInfo: ' + e);
-          oVm.$toast('网络错误，请重试');
+          console.warn('getFileInfo: ' + e);
+          oVm.$toast.fail('网络错误，请重试');
           reject();
         });
       });

@@ -75,8 +75,8 @@ export default {
           this.$toast.fail(res.data.message);
         }
       }).catch((e) => {
-        console.log('getOssSign: ' + e);
-        this.$toast('网络错误，请重试');
+        console.warn('UploadPicture getOssSign: ' + e);
+        this.$toast.fail('网络错误，请重试');
       });
     },
     getSignatureUrl(oData, fCallback) {
@@ -95,8 +95,8 @@ export default {
           this.$toast.fail(res.data.message);
         }
       }).catch((e) => {
-        console.log('getSignatureUrl: ' + e);
-        this.$toast('网络错误，请重试');
+        console.warn('UploadPicture getSignatureUrl: ' + e);
+        this.$toast.fail('网络错误，请重试');
       });
     },
   }
