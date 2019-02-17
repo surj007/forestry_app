@@ -79,8 +79,8 @@
       </div>
 
       <div class="link">
-        <a href="javascript: void(0);" @click="confirmDownload('notice')">下载《林业植物检疫监管告知书》</a>
-        <a href="javascript: void(0);" @click="confirmDownload('promise')">下载《木材调运检疫开证承诺书》</a>
+        <a href="javascript: void(0);" @click="confirmDownload('林业植物检疫监管告知书')">下载《林业植物检疫监管告知书》</a>
+        <a href="javascript: void(0);" @click="confirmDownload('木材调运检疫开证承诺书')">下载《木材调运检疫开证承诺书》</a>
       </div>
 
       <div class="btn-confirm change-button-background">
@@ -245,8 +245,8 @@ export default {
         this.oErrMsg[sInputName + 'ErrMsg'] = '';
       }
     },
-    confirmDownload(sType) {
-      this.savePic2SysGallery(sType);
+    async confirmDownload(sType) {
+      await this.$store.dispatch('savePic2SysGallery', {sType, oVm: this});
       this.$dialog.confirm({
         title: '提示',
         message: '已自动保存至手机相册',
@@ -260,9 +260,6 @@ export default {
     },
     changeShowPwd() {
       this.bShowPwd = !this.bShowPwd;
-    },
-    savePic2SysGallery(sType) {
-      window.plus.gallery.save(`_www/image/${sType}.png`);
     },
     skipNewPath(sPath) {
       this.$router.push({name: sPath});

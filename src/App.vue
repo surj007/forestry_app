@@ -6,6 +6,9 @@
 
 <script>
 export default{
-  name: 'APP'
+	name: 'APP',
+	created() {
+		this.$store.dispatch('getFileInfo', this);
+	}
 }
 </script>

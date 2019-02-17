@@ -37,9 +37,9 @@ export default {
   },
   methods: {
     upload2Oss() {
-      plus.gallery.pick((filePath) => {
+      window.plus.gallery.pick((filePath) => {
         this.getOssSign((oOssSign) => {
-          let uploadTask = plus.uploader.createUpload(oOssSign.host, {}, () => {
+          let uploadTask = window.plus.uploader.createUpload(oOssSign.host, {}, () => {
             this.getSignatureUrl({
               path: oOssSign.dirPath,
               fileName: oOssSign.key + '_' + filePath.split('/')[filePath.split('/').length - 1]

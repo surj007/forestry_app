@@ -141,10 +141,8 @@ export default {
 
       try{
         await this.$store.dispatch('login', {oLoginFormData: this.oLoginFormData, oVm: this});
-  
-        Promise.all([this.$store.dispatch('getBasicInfo', this), this.$store.dispatch('getFileInfo', this)]);
-  
-        await this.$store.dispatch('getCompanyInfo', this);
+
+        Promise.all([this.$store.dispatch('getBasicInfo', this), this.$store.dispatch('getCompanyInfo', this)]);
       }
       catch(e) {
         console.warn('login then err: ' + e);

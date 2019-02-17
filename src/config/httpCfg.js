@@ -12,7 +12,7 @@ Vue.prototype.$http = axios.create({
 
 function plusHttpRequest(config) {
   return new Promise((resolve, reject) => {
-    let xhr = new plus.net.XMLHttpRequest();
+    let xhr = new window.plus.net.XMLHttpRequest();
 
     xhr.onload = () => {
       if(config.url.indexOf('/auth/login') != -1) {

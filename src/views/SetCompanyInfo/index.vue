@@ -227,7 +227,7 @@
 
         <div class="flex-space-between">
           <p class="title-pic download-title">林业植物检疫监管告知书</p>
-          <p class="download download-title" @click="savePic2SysGallery('notice')">下载</p>
+          <p class="download download-title" @click="savePic2SysGallery('林业植物检疫监管告知书')">下载</p>
         </div>
         <van-cell-group class="van-hairline--bottom" :border="false" style="padding-bottom: 26px;">
           <upload-picture :sPictureUrl="oFormData.notificationPic" :fSetPicturUrl="setNotificationPictureUrl" />
@@ -235,7 +235,7 @@
 
         <div class="flex-space-between">
           <p class="title-pic download-title">木材调运检疫开证承诺书</p>
-          <p class="download download-title" @click="savePic2SysGallery('promise')">下载</p>
+          <p class="download download-title" @click="savePic2SysGallery('木材调运检疫开证承诺书')">下载</p>
         </div>
         <van-cell-group class="van-hairline--bottom" :border="false" style="padding-bottom: 26px;">
           <upload-picture :sPictureUrl="oFormData.commitPic" :fSetPicturUrl="setCommitPictureUrl" />
@@ -419,8 +419,8 @@ export default {
     setCommitPictureUrl(sUrl) {
       this.oFormData.commitPic = sUrl;
     },
-    savePic2SysGallery(sType) {
-      window.plus.gallery.save(`_www/image/${sType}.png`);
+    async savePic2SysGallery(sType) {
+      await this.$store.dispatch('savePic2SysGallery', {sType, oVm: this});
       this.$toast.success('已下载至手机相册');
     }
   }
