@@ -142,13 +142,13 @@ export default {
       try{
         await this.$store.dispatch('login', {oLoginFormData: this.oLoginFormData, oVm: this});
 
-        Promise.all([this.$store.dispatch('getBasicInfo', this), this.$store.dispatch('getCompanyInfo', this)]);
+        await Promise.all([this.$store.dispatch('getBasicInfo', this), this.$store.dispatch('getCompanyInfo', this)]);
       }
       catch(e) {
         console.warn('login then err: ' + e);
       }
     
-      if(this.$store.state.oCompanyInfo) {
+      if(this.$store.getters.oCompanyInfo) {
         this.$router.push({name: ''});
       }
       else {
