@@ -6,14 +6,19 @@ import router from './router';
 import store from './store';
 import './libs/lib-flexible';
 import './config/importUI';
-import './config/httpCfg';
+import request from './config/request';
+import storage from './config/storage'
 
 import './styles/normalize.css';
 import './styles/style.css';
 
 Vue.config.productionTip = false;
 
+window.baseUrl = 'http://127.0.0.1';
+window.$storage = storage;
+
 Vue.prototype.$qs = qs;
+Vue.prototype.$http = request;
 
 //document.addEventListener('plusready', () => {
   window.vm = new Vue({

@@ -28,12 +28,12 @@ const info = {
           }
           else {
             oVm.$toast.fail(res.data.message);
-            reject();
+            reject(res.data.message);
           }
         }).catch((e) => {
           console.warn('getCompanyInfo: ' + e);
           oVm.$toast.fail('网络错误，请重试');
-          reject();
+          reject(e);
         });
       });
     },
@@ -49,12 +49,12 @@ const info = {
           }
           else {
             oVm.$toast.fail(res.data.message);
-            reject();
+            reject(res.data.message);
           }
         }).catch((e) => {
           console.warn('getBasicInfo: ' + e);
           oVm.$toast.fail('网络错误，请重试');
-          reject();
+          reject(e);
         });
       });
     },

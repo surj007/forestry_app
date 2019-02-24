@@ -27,12 +27,12 @@ const user = {
           }
           else {
             oVm.$toast.fail(res.data.message);
-            reject();
+            reject(res.data.message);
           }
         }).catch((e) => {
           console.warn('login: ' + e);
           oVm.$toast.fail('网络错误，请重试');
-          reject();
+          reject(e);
         });
       });
     }

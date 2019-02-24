@@ -149,7 +149,7 @@ export default {
       }
     
       if(this.$store.getters.oCompanyInfo) {
-        this.$router.push({name: ''});
+        this.$router.push({name: 'home'});
       }
       else {
         this.$router.push({name: 'setCompanyInfo'});

@@ -26,8 +26,13 @@ export default new Router({
       component: () => import('../views/SetCompanyInfo')
     },
     {
+      path: '/home',
+      name: 'home',
+      component: () => import('../views/Home')
+    },
+    {
       path: '*',
-      redirect: '/login'
+      redirect: '/home'
     }
   ]
 });
