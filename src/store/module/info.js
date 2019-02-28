@@ -40,8 +40,11 @@ const info = {
     getBasicInfo(context, oVm) {
       return new Promise((resolve, reject) => {
         oVm.$http({
-          url: `${window.baseUrl}/system/basic/getBasicInfo`,
-          method: 'GET'
+          url: `${window.baseUrl}/system/file/getBasicInfo`,
+          method: 'GET',
+          params: {
+            basicNmae: ''
+          }
         }).then((res) => {
           if(res.data.code == 0) {
             context.commit('setBasicInfo', res.data.data);
@@ -62,7 +65,10 @@ const info = {
       return new Promise((resolve, reject) => {
         oVm.$http({
           url: `${window.baseUrl}/system/basic/getFileInfo`,
-          method: 'GET'
+          method: 'GET',
+          params: {
+            fileName: ''
+          }
         }).then((res) => {
           if(res.data.code == 0) {
             context.commit('setFileInfo', res.data.data);

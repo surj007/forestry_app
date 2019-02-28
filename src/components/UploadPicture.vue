@@ -65,7 +65,7 @@ export default {
         url: `${window.baseUrl}/oss/getSign`,
         method: 'GET',
         params: {
-          path: 'app_company'
+          path: 'image/app_company/'
         }
       }).then((res) => {
         if (res.data.code == 0) {
