@@ -62,41 +62,29 @@ export default {
     },
     getOssSign(fCallback) {
       this.$http({
-        url: `${window.baseUrl}/oss/getSign`,
+        url: `${window.baseUrl2Node}/oss/getSign`,
         method: 'GET',
         params: {
           path: 'image/app_company/'
         }
       }).then((res) => {
-        if (res.data.code == 0) {
+        if (res && res.data.code == 0) {
           fCallback && fCallback(res.data.data);
-        } 
-        else {
-          this.$toast.fail(res.data.message);
         }
-      }).catch((e) => {
-        console.warn('UploadPicture getOssSign: ' + e);
-        this.$toast.fail('网络错误，请重试');
       });
     },
     getSignatureUrl(oData, fCallback) {
       this.$http({
-        url: `${window.baseUrl}/oss/getSignatureUrl`,
+        url: `${window.baseUrl2Node}/oss/getSignatureUrl`,
         method: 'GET',
         params: {
           path: oData.path,
           fileName: oData.fileName
         }
       }).then((res) => {
-        if(res.data.code == 0) {
+        if(res && res.data.code == 0) {
           fCallback && fCallback(res.data.data);
-        } 
-        else {
-          this.$toast.fail(res.data.message);
         }
-      }).catch((e) => {
-        console.warn('UploadPicture getSignatureUrl: ' + e);
-        this.$toast.fail('网络错误，请重试');
       });
     },
   }

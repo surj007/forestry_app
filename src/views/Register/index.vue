@@ -184,16 +184,10 @@ export default {
           code: this.oLoginFormData.sCode
         }
       }).then((res) => {
-        if(res.data.code == 0) {
+        if(res && res.data.code == 0) {
           this.$toast.success('注册成功，请登陆');
           this.skipNewPath('login');
         }
-        else {
-          this.$toast.fail(res.data.message);
-        }
-      }).catch((e) => {
-        console.warn('register submit: ' + e);
-        this.$toast.fail('网络错误，请重试');
       });
     },
     getCode(fCallback) {
@@ -205,16 +199,10 @@ export default {
           type: 'reg'
         }
       }).then((res) => {
-        if(res.data.code == 0) {
+        if(res && res.data.code == 0) {
           this.$toast.success('验证码已发送');
           fCallback && fCallback();
         }
-        else {
-          this.$toast.fail(res.data.message);
-        }
-      }).catch((e) => {
-        console.warn('register getCode: ' + e);
-        this.$toast.fail('网络错误，请重试');
       });
     },
     sendCode() {

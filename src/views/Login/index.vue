@@ -139,20 +139,9 @@ export default {
         return;
       }
 
-      try{
-        await this.$store.dispatch('login', {oLoginFormData: this.oLoginFormData, oVm: this});
-
-        await Promise.all([this.$store.dispatch('getBasicInfo', this), this.$store.dispatch('getCompanyInfo', this)]);
-      }
-      catch(e) {
-        console.warn('login then err: ' + e);
-      }
-    
-      if(this.$store.getters.oCompanyInfo) {
+      await this.$store.dispatch('login', {oLoginFormData: this.oLoginFormData, oVm: this});
+      if(this.$store.getters.oUserInfo.id) {
         this.$router.push({name: 'home'});
-      }
-      else {
-        this.$router.push({name: 'setCompanyInfo'});
       }
     },
     getCode(fCallback) {
@@ -163,16 +152,10 @@ export default {
           phone: this.oLoginFormData.sUsername
         }
       }).then((res) => {
-        if(res.data.code == 0) {
+        if(res && res.data.code == 0) {
           this.$toast.success('验证码已发送');
           fCallback && fCallback();
         }
-        else {
-          this.$toast.fail(res.data.message);
-        }
-      }).catch((e) => {
-        console.warn('login getCode: ' + e);
-        this.$toast.fail('网络错误，请重试');
       });
     },
     sendCode() {

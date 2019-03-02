@@ -11,9 +11,15 @@
 <script>
 export default {
   name: 'Home',
-  created() {
-    if(!window.plus.storage.getItem('Cookie')) {
+  async created() {
+    if(!window.$storage.get('token')) {
       this.$router.push({name: 'login'});
+    }
+    else {
+      await this.$store.dispatch('getCompanyInfo', this);
+      if(!this.$store.getters.oCompanyInfo.id) {
+        this.$router.push({name: 'setCompanyInfo'});
+      }
     }
   },
   data() {

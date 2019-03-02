@@ -1,7 +1,7 @@
 const storage = {
   get(key) {
     let obj = JSON.parse(window.plus.storage.getItem(key));
-    if(obj && new Date() <= new Date(obj.expire)) {
+    if(obj && new Date().getTime() <= parseInt(obj.expire)) {
       return obj.data;
     }
     else {
@@ -9,10 +9,10 @@ const storage = {
       return null;
     }
   },
-  set(key, value) {
+  set(key, value, expire = 24 * 60 * 60 * 1000) {
     let obj = {};
     obj.data = value;
-    obj.expire = new Date().setDate(new Date().getDate() + 1);
+    obj.expire = new Date().getTime() + expire;
     window.plus.storage.setItem(key, JSON.stringify(obj));
   },
   del(key) {

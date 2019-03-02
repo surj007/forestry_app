@@ -1,83 +1,41 @@
 import axios from 'axios';
 
+import { delAllInfo } from '../service/auth';
+
 const request = axios.create({
+  baseURL: 'http://192.168.43.251:8089',
   timeout: 10000,
   headers: {
     'Cache-Control': 'no-cache'
   }
 });
 
-function plusRequest(config) {
-  return new Promise((resolve, reject) => {
-    let xhr = new window.plus.net.XMLHttpRequest();
+request.interceptors.request.use((config) => {
+  config.headers['x-auth-token'] = window.$storage.get('token');
+  
+  return config;
+});
 
-    xhr.onload = () => {
-      if(config.url.indexOf('/auth/login') != -1) {
-        window.$storage.set('Cookie', xhr.getResponseHeader('Set-Cookie'));
-      }
+request.interceptors.response.use((res) => {
+  //console.log(JSON.stringify(res));
+  if(res.config.url.includes('/auth/login')) {
+    window.$storage.set('token', res.headers['x-auth-token']);
+  }
 
-      if(xhr.response.message == '请重新登陆') {
-        vm.$router.push({name: 'login'});
-      }
-
-      resolve({
-        data: xhr.response
-      });
-    }
-    xhr.onerror = (e) => {
-      reject('http err: ' + e);
-    }
-    xhr.ontimeout = (e) => {
-      reject('time out');
-    }
-
-    xhr.responseType = 'json';
-    xhr.timeout = 10000;
-
-    if(config.params) {
-      config.url += '?';
-      for(let i in config.params) {
-        config.url += `${i}=${config.params[i]}&`;
-      }
-      config.url = config.url.substring(0, config.url.length - 1);
-    }
-
-    if(config.url.indexOf('http') == -1) {
-      config.url = `${window.baseUrl}:8089` + config.url;
-    }
-
-    xhr.open(config.method, config.url);
-    
-    if(config.headers) {
-      let flag = false;
-
-      for(let i in config.headers) {
-        if(i == 'Content-Type') {
-          flag = true;
-        }
-
-        xhr.setRequestHeader(i, config.headers[i]);
-      }
-
-      if(!flag) {
-        xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
-      }
-    }
-    else {
-      xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
-    }
-
-    if(config.url.indexOf('/auth/login') == -1 && window.$storage.get('Cookie')) {
-      xhr.setRequestHeader('Cookie', window.$storage.get('Cookie'));
-    }
-
-    if(config.data) {
-      xhr.send(config.data);
-    }
-    else {
-      xhr.send();
-    }
-  });
-}
+  if(res.data.message == '请重新登陆') {
+    console.warn('登陆超时');
+    delAllInfo();
+    window.$vm.$router.push({name: 'login'});
+  }
+  else if(res.data.code != 0) {
+    console.warn(res.config.url, res.data.message);
+    window.$vm.$toast.fail(res.data.message);
+  }
+  
+  return res;
+}, (e) => {
+  console.warn('http status err: ' + JSON.stringify(e));
+  window.$vm.$toast.fail('网络错误，请重试');
+});
 
 export default request;

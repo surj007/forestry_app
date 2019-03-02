@@ -4,24 +4,25 @@ import qs from 'qs';
 import App from './App';
 import router from './router';
 import store from './store';
+import request from './config/request';
+import storage from './config/storage';
 import './libs/lib-flexible';
 import './config/importUI';
-import request from './config/request';
-import storage from './config/storage'
 
 import './styles/normalize.css';
 import './styles/style.css';
 
 Vue.config.productionTip = false;
 
-window.baseUrl = 'http://127.0.0.1';
+window.baseUrl2Node = 'http://192.168.43.251';
 window.$storage = storage;
 
 Vue.prototype.$qs = qs;
 Vue.prototype.$http = request;
 
-//document.addEventListener('plusready', () => {
-  window.vm = new Vue({
+document.addEventListener('plusready', () => {
+  window.plus.storage.removeItem('token');
+  window.$vm = new Vue({
     el: '#app',
     router,
     store,
@@ -33,4 +34,4 @@ Vue.prototype.$http = request;
       }
     }
   });
-//});
+});

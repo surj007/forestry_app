@@ -106,7 +106,7 @@
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
         <van-field label="企业类型" required disabled :error-message="oErrMsg.companyTypeErrMsg" @blur="handleInputBlur('companyType', 'array')">
           <van-checkbox-group slot="button" v-model="oFormData.companyType">
-            <template v-for="item in $store.getter.oBasicInfo['企业类型'].info">
+            <template v-for="item in $store.getters.oBasicInfo['企业类型'].info">
               <van-checkbox style="margin-bottom: 7px;" :name="item" shape="square">{{ item }}</van-checkbox>
             </template>
           </van-checkbox-group>
@@ -116,7 +116,7 @@
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
         <van-field label="原料来源" required disabled :error-message="oErrMsg.sourceErrMsg" @blur="handleInputBlur('source', 'array')">
           <van-checkbox-group slot="button" v-model="oFormData.source">
-            <template v-for="item in $store.getter.oBasicInfo['原料来源'].info">
+            <template v-for="item in $store.getters.oBasicInfo['原料来源'].info">
               <van-checkbox style="margin-bottom: 7px;" :name="item" shape="square">{{ item }}</van-checkbox>
             </template>
           </van-checkbox-group>
@@ -153,7 +153,7 @@
         <van-col span="12">
           <van-cell-group class="van-hairline--bottom" :border="false">
             <van-field label="日生产量 " placeholder="生产量" v-model="oFormData.sawOutput">
-              <span slot="button" style="color: #333333;">m3</span>
+              <span slot="button" style="color: #333333;">m³</span>
             </van-field>
           </van-cell-group>
         </van-col>
@@ -170,7 +170,7 @@
         <van-col span="12">
           <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
             <van-field label="日生产量 " placeholder="生产量" v-model="oFormData.otherOutput">
-              <span slot="button" style="color: #333333;">m3</span>
+              <span slot="button" style="color: #333333;">m³</span>
             </van-field>
           </van-cell-group>
         </van-col>
@@ -192,7 +192,7 @@
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
         <van-field label="月销售量" placeholder="请输入销售量" v-model="oFormData.saleMount">
-          <span slot="button" style="color: #333333;">m3</span>
+          <span slot="button" style="color: #333333;">m³</span>
         </van-field>
       </van-cell-group>
 
@@ -279,11 +279,11 @@ export default {
         saleArea: '',
         saleMount: '',
         remark: '',
-        licencePic: '1',
-        cardFrontPic: '1',
-        cardOppositePic: '1',
-        notificationPic: '1',
-        commitPic: '1'
+        licencePic: '',
+        cardFrontPic: '',
+        cardOppositePic: '',
+        notificationPic: '',
+        commitPic: ''
       },
       oErrMsg: {
         nameErrMsg: '',
@@ -313,15 +313,10 @@ export default {
         method: 'POST',
         data
       }).then((res) => {
-        if(res.data.code == 0) {
+        console.log(123);
+        if(res && res.data.code == 0) {
           this.$toast.success('提交企业信息成功');
         }
-        else {
-          this.$toast.fail(res.data.message);
-        }
-      }).catch((e) => {
-        console.warn('setCompanyInfo submit: ' + e);
-        this.$toast.fail('网络错误，请重试');
       });
     },
     handleInputBlur(sInputName, type) {

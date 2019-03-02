@@ -90,7 +90,7 @@
     </div>
 
     <div class="confirm-component" v-if="sComponent == 'confirm'">
-      <Confirm sContentTop="重置密码成功" sContentButtom="1" sBtn="返回登录" :fhandleBtnClick="cancel" />
+      <Confirm sContentTop="重置密码成功" sContentBottom="1" sBtnText="返回登录" :fhandleBtnClick="cancel" />
     </div>
   </div>
 </template>
@@ -164,15 +164,9 @@ export default {
           code: this.oLoginFormData.sCode
         }
       }).then((res) => {
-        if(res.data.code == 0) {
+        if(res && res.data.code == 0) {
           this.sComponent = 'confirm';
         }
-        else {
-          this.$toast.fail(res.data.message);
-        }
-      }).catch((e) => {
-        console.warn('resetPwd submit: ' + e);
-        this.$toast.fail('网络错误，请重试');
       });
     },
     getCode(fCallback) {
@@ -184,16 +178,10 @@ export default {
           type: 'resetPwd'
         }
       }).then((res) => {
-        if(res.data.code == 0) {
+        if(res && res.data.code == 0) {
           this.$toast.success('验证码已发送');
           fCallback && fCallback();
         }
-        else {
-          this.$toast.fail(res.data.message);
-        }
-      }).catch((e) => {
-        console.warn('resetPwd getCode: ' + e);
-        this.$toast.fail('网络错误，请重试');
       });
     },
     sendCode() {

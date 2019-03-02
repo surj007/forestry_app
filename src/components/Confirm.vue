@@ -35,11 +35,11 @@
 
     <div class="content">
       <p style="font-size: 18px;">{{ sContentTop }}</p>
-      <p style="font-size: 16px;margin-top: 15px;" :class="{hide: sContentButtom == '1'}">{{ sContentButtom }}</p>
+      <p style="font-size: 16px;margin-top: 15px;" :class="{hide: sContentBottom == '1'}">{{ sContentBottom }}</p>
     </div>
 
     <div class="btn change-button-background">
-      <van-button size="large" round type="primary" @click="fhandleBtnClick">{{ sBtn }}</van-button>
+      <van-button size="large" round type="primary" @click="fhandleBtnClick">{{ sBtnText }}</van-button>
     </div>
   </div>
 </template>
@@ -52,11 +52,11 @@ export default {
       type: String,
       required: true
     },
-    sContentButtom: {
+    sContentBottom: {
       type: String,
       required: true
     },
-    sBtn: {
+    sBtnText: {
       type: String,
       required: true
     },

@@ -17,72 +17,39 @@ const info = {
   },
   actions: {
     getCompanyInfo(context, oVm) {
-      return new Promise((resolve, reject) => {
-        oVm.$http({
-          url: '/company/getCompany',
-          method: 'GET'
-        }).then((res) => {
-          if(res.data.code == 0) {
-            context.commit('setCompanyInfo', res.data.data);
-            resolve();
-          }
-          else {
-            oVm.$toast.fail(res.data.message);
-            reject(res.data.message);
-          }
-        }).catch((e) => {
-          console.warn('getCompanyInfo: ' + e);
-          oVm.$toast.fail('网络错误，请重试');
-          reject(e);
-        });
+      return oVm.$http({
+        url: '/company/getCompany',
+        method: 'GET'
+      }).then((res) => {
+        if(res && res.data.code == 0) {
+          context.commit('setCompanyInfo', res.data.data || {});
+        }
       });
     },
     getBasicInfo(context, oVm) {
-      return new Promise((resolve, reject) => {
-        oVm.$http({
-          url: `${window.baseUrl}/system/file/getBasicInfo`,
-          method: 'GET',
-          params: {
-            basicNmae: ''
-          }
-        }).then((res) => {
-          if(res.data.code == 0) {
-            context.commit('setBasicInfo', res.data.data);
-            resolve();
-          }
-          else {
-            oVm.$toast.fail(res.data.message);
-            reject(res.data.message);
-          }
-        }).catch((e) => {
-          console.warn('getBasicInfo: ' + e);
-          oVm.$toast.fail('网络错误，请重试');
-          reject(e);
-        });
+      return oVm.$http({
+        url: `${window.baseUrl2Node}/system/basic/getBasicInfo`,
+        method: 'GET',
+        params: {
+          basicName: ''
+        }
+      }).then((res) => {
+        if(res && res.data.code == 0) {
+          context.commit('setBasicInfo', res.data.data || {});
+        }
       });
     },
     getFileInfo(context, oVm) {
-      return new Promise((resolve, reject) => {
-        oVm.$http({
-          url: `${window.baseUrl}/system/basic/getFileInfo`,
-          method: 'GET',
-          params: {
-            fileName: ''
-          }
-        }).then((res) => {
-          if(res.data.code == 0) {
-            context.commit('setFileInfo', res.data.data);
-            resolve();
-          }
-          else {
-            oVm.$toast.fail(res.data.message);
-            reject();
-          }
-        }).catch((e) => {
-          console.warn('getFileInfo: ' + e);
-          oVm.$toast.fail('网络错误，请重试');
-          reject();
-        });
+      return oVm.$http({
+        url: `${window.baseUrl2Node}/system/file/getFileInfo`,
+        method: 'GET',
+        params: {
+          fileName: ''
+        }
+      }).then((res) => {
+        if(res && res.data.code == 0) {
+          context.commit('setFileInfo', res.data.data || {});
+        }
       });
     }
   }
