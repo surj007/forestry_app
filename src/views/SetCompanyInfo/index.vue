@@ -83,6 +83,13 @@
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
+        <van-field label="信用代码" placeholder="请输入信用代码" required v-model="oFormData.code" 
+        :error-message="oErrMsg.codeErrMsg" @blur="handleInputBlur('code', 'string')">
+          <span slot="button" style="color: transparent;">1</span>
+        </van-field>
+      </van-cell-group>
+
+      <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
         <van-field label="联系电话" placeholder="请输入联系电话" required v-model="oFormData.phone" 
         :error-message="oErrMsg.phoneErrMsg" @blur="handleInputBlur('phone', 'string')">
           <span slot="button" style="color: transparent;">1</span>
@@ -263,6 +270,7 @@ export default {
         id: 0,
         name: '',
         corporation: '',
+        code: '',
         phone: '',
         address: '',
         store: '',
@@ -288,6 +296,7 @@ export default {
       oErrMsg: {
         nameErrMsg: '',
         corporationErrMsg: '',
+        codeErrMsg: '',
         phoneErrMsg: '',
         addressErrMsg: '',
         storeErrMsg: '',
@@ -313,7 +322,6 @@ export default {
         method: 'POST',
         data
       }).then((res) => {
-        console.log(123);
         if(res && res.data.code == 0) {
           this.$toast.success('提交企业信息成功');
         }

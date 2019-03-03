@@ -14,14 +14,13 @@ import './styles/style.css';
 
 Vue.config.productionTip = false;
 
-window.baseUrl2Node = 'http://192.168.43.251';
+window.baseUrl2Node = 'http://192.168.0.106';
 window.$storage = storage;
 
 Vue.prototype.$qs = qs;
 Vue.prototype.$http = request;
 
-document.addEventListener('plusready', () => {
-  window.plus.storage.removeItem('token');
+//document.addEventListener('plusready', () => {
   window.$vm = new Vue({
     el: '#app',
     router,
@@ -34,4 +33,4 @@ document.addEventListener('plusready', () => {
       }
     }
   });
-});
+//});
