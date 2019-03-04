@@ -1,7 +1,10 @@
 const info = {
   state: {
     oCompanyInfo: {},
-    oBasicInfo: {},
+    oBasicInfo: {
+      '企业类型': [],
+      '原料来源': []
+    },
     oFileInfo: {}
   },
   mutations: {
@@ -28,7 +31,7 @@ const info = {
     },
     getBasicInfo(context, oVm) {
       return oVm.$http({
-        url: `${window.baseUrl2Node}/system/basic/getBasicInfo`,
+        url: `${window.baseUrl}/system/basic/getBasicInfo`,
         method: 'GET',
         params: {
           basicName: ''
@@ -41,7 +44,7 @@ const info = {
     },
     getFileInfo(context, oVm) {
       return oVm.$http({
-        url: `${window.baseUrl2Node}/system/file/getFileInfo`,
+        url: `${window.baseUrl}/system/file/getFileInfo`,
         method: 'GET',
         params: {
           fileName: ''

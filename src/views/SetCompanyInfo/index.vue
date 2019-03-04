@@ -1,5 +1,7 @@
 <style lang="less" scoped>
 .setCompanyInfo {
+  margin-top: 46px;
+  overflow: auto;
   .info {
     margin-bottom: 40px;
     .title {
@@ -63,7 +65,7 @@
 
 <template>
   <div class="setCompanyInfo" :style="{background: sComponent == 'picture' ? '#F8F8F8' : '#FFFFFF'}">
-    <van-nav-bar :left-arrow="sComponent == 'info' ? false : true" @click-left="sComponent = 'info'" :title="sComponent == 'info' ? '企业信息' : '企业证件照上传'" />
+    <van-nav-bar fixed :left-arrow="sComponent == 'info' ? false : true" @click-left="sComponent = 'info'" :title="sComponent == 'info' ? '企业信息' : '企业证件照上传'" />
 
     <div class="info" v-if="sComponent == 'info'">
       <p class="title">企业基本信息</p>

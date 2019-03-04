@@ -3,7 +3,7 @@ import axios from 'axios';
 import { delAllInfo } from '../service/auth';
 
 const request = axios.create({
-  baseURL: 'http://192.168.0.106:8089',
+  // baseURL: `${window.baseUrl}:8089`,
   timeout: 10000,
   headers: {
     'Cache-Control': 'no-cache'

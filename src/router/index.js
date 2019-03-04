@@ -26,6 +26,11 @@ export default new Router({
       component: () => import('../views/SetCompanyInfo')
     },
     {
+      path: '/setEmployee',
+      name: 'setEmployee',
+      component: () => import('../views/SetEmployee')
+    },
+    {
       path: '/home',
       name: 'home',
       component: () => import('../views/Home')

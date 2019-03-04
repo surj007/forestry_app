@@ -14,7 +14,7 @@ import './styles/style.css';
 
 Vue.config.productionTip = false;
 
-window.baseUrl2Node = 'http://192.168.0.106';
+window.baseUrl = 'http://127.0.0.1';
 window.$storage = storage;
 
 Vue.prototype.$qs = qs;

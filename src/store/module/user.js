@@ -22,6 +22,7 @@ const user = {
       }).then((res) => {
         if(res && res.data.code == 0) {
           context.commit('setUserInfo', res.data.data);
+          window.$storage.set('user', res.data.data);
         }
       });
     }

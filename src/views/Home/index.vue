@@ -17,7 +17,7 @@ export default {
     }
     else {
       await this.$store.dispatch('getCompanyInfo', this);
-      if(!this.$store.getters.oCompanyInfo.id) {
+      if(!this.$store.getters.oCompanyInfo.id && window.$storage.get('user') && window.$storage.get('user').roles[0].id == 1) {
         this.$router.push({name: 'setCompanyInfo'});
       }
     }
