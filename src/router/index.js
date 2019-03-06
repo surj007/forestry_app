@@ -31,6 +31,21 @@ export default new Router({
       component: () => import('../views/SetEmployee')
     },
     {
+      path: '/chooseCert',
+      name: 'chooseCert',
+      component: () => import('../views/ChooseCert')
+    },
+    {
+      path: '/woodCert',
+      name: 'woodCert',
+      component: () => import('../views/WoodCert')
+    },
+    {
+      path: '/boardCert',
+      name: 'boardCert',
+      component: () => import('../views/BoardCert')
+    },
+    {
       path: '/home',
       name: 'home',
       component: () => import('../views/Home')

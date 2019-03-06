@@ -23,7 +23,7 @@
 
 <template>
   <div class="set-employee">
-    <van-nav-bar title="添加业务员" right-text="跳过" fixed />
+    <van-nav-bar title="添加业务员" right-text="跳过" fixed @click-right="$router.push({name: 'chooseCert'})" />
 
     <employee-card ref="employee-card" v-for="(item, index) in employee" :key="index" v-model="employee[index]" :index="index" @del-card="handleDelCard" />
 
@@ -80,7 +80,10 @@ export default {
           }
         }).then((res) => {
           if(res && res.data.code == 0) {
-            this.$toast.success('添加业务员成功');
+            this.$toast.success('修改业务员成功');
+            if(window.$storage.get('isReg')) {
+              this.$router.push({name: 'chooseCert'});
+            }
           }
         });
       }

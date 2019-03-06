@@ -28,6 +28,9 @@ export default {
     fSetPicturUrl: {
       type: Function,
       default: null
+    },
+    index: {
+      type: Number
     }
   },
   data() {
@@ -44,7 +47,12 @@ export default {
               path: oOssSign.dirPath,
               fileName: oOssSign.key + '_' + filePath.split('/')[filePath.split('/').length - 1]
             }, (sUrl) => {
-              this.fSetPicturUrl && this.fSetPicturUrl(sUrl);
+              if(this.index != undefined) {
+                this.fSetPicturUrl && this.fSetPicturUrl(this.index, sUrl);
+              }
+              else {
+                this.fSetPicturUrl && this.fSetPicturUrl(sUrl);
+              }
             });
           });
 	        uploadTask.addData("key",  oOssSign.dirPath + oOssSign.key + '_' + '${filename}');

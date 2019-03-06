@@ -6,6 +6,6 @@
 3、路由调整
 
 ###上线修改
-1、main文件 加上plusready、baseUrl地址改为47.105.67.161
-2、requestjs baseURL打开 
+1、main文件 加上plusready、remove去掉
+2、requestjs baseURL打开、baseUrl地址改为47.105.67.161  
 3、storage文件，storage方式修改

@@ -262,6 +262,7 @@
 import UploadPicture from '../../components/UploadPicture';
 
 export default {
+  name: 'SetCompanyInfo',
   components: {
     UploadPicture
   },
@@ -326,6 +327,7 @@ export default {
       }).then((res) => {
         if(res && res.data.code == 0) {
           this.$toast.success('提交企业信息成功');
+          this.$router.push({name: 'setEmployee'});
         }
       });
     },

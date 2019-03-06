@@ -14,13 +14,17 @@ import './styles/style.css';
 
 Vue.config.productionTip = false;
 
-window.baseUrl = 'http://127.0.0.1';
 window.$storage = storage;
 
 Vue.prototype.$qs = qs;
 Vue.prototype.$http = request;
+Vue.prototype.$window = window;
 
-//document.addEventListener('plusready', () => {
+// document.addEventListener('plusready', () => {
+//   window.$storage.del('token');
+//   window.$storage.del('user');
+//   window.$storage.del('isReg');
+//   window.$storage.del('hasCert');
   window.$vm = new Vue({
     el: '#app',
     router,
@@ -33,4 +37,4 @@ Vue.prototype.$http = request;
       }
     }
   });
-//});
+// });

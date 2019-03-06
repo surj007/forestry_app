@@ -2,6 +2,8 @@ import axios from 'axios';
 
 import { delAllInfo } from '../service/auth';
 
+window.baseUrl = 'http://127.0.0.1';
+
 const request = axios.create({
   // baseURL: `${window.baseUrl}:8089`,
   timeout: 10000,
@@ -17,7 +19,7 @@ request.interceptors.request.use((config) => {
 });
 
 request.interceptors.response.use((res) => {
-  //console.log(JSON.stringify(res));
+  // console.log(JSON.stringify(res.data));
   if(res.config.url.includes('/auth/login')) {
     window.$storage.set('token', res.headers['x-auth-token']);
   }
