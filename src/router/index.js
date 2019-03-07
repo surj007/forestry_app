@@ -51,6 +51,11 @@ export default new Router({
       component: () => import('../views/Home')
     },
     {
+      path: '/setting',
+      name: 'setting',
+      component: () => import('../views/Setting')
+    },
+    {
       path: '*',
       redirect: '/home'
     }

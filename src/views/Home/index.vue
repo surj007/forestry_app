@@ -1,10 +1,86 @@
 <style lang="less" scoped>
-
+  .home {
+    background: #F8F8F8;
+    height: 100vh;
+    &-card {
+      margin: 10px 8px 0 8px;
+      padding-top: 20px;
+      border-radius: 5px;
+      height: 110px;
+      background-size: 100% 100%;
+      &--first {
+        background-image: url('../../assets/firstCard.png');
+      }
+      &--second {
+        background-image: url('../../assets/secondCard.png');
+      }
+      &--third {
+        background-image: url('../../assets/thirdCard.png');
+      }
+      &__title {
+        color: #FFF;
+        font-size: 20px;
+        margin: 0 8px;
+      }
+      &__btn {
+        color: #FFF;
+        font-size: 14px;
+        border: 1px solid #FFF;
+        border-radius: 5px;
+        height: 26px;
+        width: 69px;
+        float: right;
+        margin: 15px 8px 0 0;
+      }
+    }
+  }
 </style>
+<style>
+  .change-tabbar-icon .van-tabbar-item__icon {
+    border-radius: 100%;
+    width: 50px;
+    height: 50px;
+    background: #01B6AF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFF;
+    font-size: 25px;
+  }
+</style>
+
 
 <template>
   <div class="home">
-    home
+    <van-nav-bar title="业务办理">
+      <van-icon name="bulb-o" slot="left" size="0.7rem">
+        <sup class="dot"></sup>
+      </van-icon>
+      <van-icon name="setting-o" slot="right" size="0.6rem" @click="$router.push({name: 'setting'})" />
+    </van-nav-bar>
+
+    <div class="home-card home-card--first">
+      <p class="home-card__title">原木类开证</p>
+      <div class="home-card__btn flex-center-xy" @click="$router.push({name: 'woodCert'})">申请</div>
+    </div>
+
+    <div class="home-card home-card--second">
+      <p class="home-card__title">板材类开证</p>
+      <div class="home-card__btn flex-center-xy" @click="$router.push({name: 'boardCert'})">申请</div>
+    </div>
+
+    <div class="home-card home-card--third">
+      <p class="home-card__title">木材运输证与植物检疫申请</p>
+      <div class="home-card__btn flex-center-xy">申请</div>
+    </div>
+
+    <van-tabbar v-model="active">
+      <van-tabbar-item icon="clock-o">申请记录</van-tabbar-item>
+      <div class="change-tabbar-icon">
+        <van-tabbar-item icon="photograph"></van-tabbar-item>
+      </div>
+      <van-tabbar-item icon="user-o">企业管理</van-tabbar-item>
+    </van-tabbar>
   </div>
 </template>
 
@@ -24,7 +100,7 @@ export default {
   },
   data() {
     return {
-
+      active: 1
     }
   }
 }

@@ -26,3 +26,9 @@ Vue.use(Checkbox).use(CheckboxGroup);
 
 import { Row, Col } from 'vant';
 Vue.use(Row).use(Col);
+
+import { Tabbar, TabbarItem } from 'vant';
+Vue.use(Tabbar).use(TabbarItem);
+
+import { Loading } from 'vant';
+Vue.use(Loading);

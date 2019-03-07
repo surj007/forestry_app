@@ -14,7 +14,7 @@ const request = axios.create({
 
 request.interceptors.request.use((config) => {
   config.headers['x-auth-token'] = window.$storage.get('token');
-  
+
   return config;
 });
 

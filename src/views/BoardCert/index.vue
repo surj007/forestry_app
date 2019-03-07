@@ -1,0 +1,220 @@
+<style lang="less" scoped>
+.wood-cert {
+  background: #f8f8ff;
+  margin-top: 46px;
+  overflow: hidden;
+  padding-bottom: 36px;
+  &-card {
+    margin: 10px 10px 0 10px;
+    background: #FFF;
+    border-radius: 10px;
+    &__header {
+      border-bottom: 1px dashed #999999;
+      height: 55px;
+      padding: 0 10px;
+      .wood-cert-card {
+        &__img {
+          height: 26px;
+          width: 23px;
+        }
+        &__title {
+          color: #333333;
+          font-size: 16px;
+          margin-left: 10px;
+        }
+      }
+    }
+    &__tips {
+      color: #FF8F3B;
+      font-size: 14px;
+      padding-bottom: 42px;
+    }
+  }
+  &__btn {
+    margin-top: 40px;
+    padding:0 15px;
+  }
+  .title-pic {
+    font-family: 'SourceHanSansSC-regular';
+    font-size: 14px;
+    color: #333333;
+    &:after {
+      content: ' *';
+      color: red;
+    }
+  }
+  .add-btn {
+    font-size: 14px;
+    margin-top: 17px;
+    margin-left: 10px;
+  }
+}
+</style>
+
+<template>
+  <div class="wood-cert">
+    <van-nav-bar title="板材类开证" left-arrow @click-left="goBack" fixed />
+
+    <div class="wood-cert-card">
+      <div class="wood-cert-card__header flex-center-y">
+        <img src="../../assets/cert.png" alt="" class="wood-cert-card__img">
+        
+        <div class="wood-cert-card__title">板材类开证单</div>
+      </div>
+
+      <div style="margin-left: 12px;">
+        <p class="title-pic" style="margin: 0 0 22px 0;padding-top: 37px;">
+          1.通关无纸化放行通知单
+          <a href="javascript: void(0);" class="add-btn" @click="formData.noticePic.push('')">+新增</a>
+          <a href="javascript: void(0);" class="add-btn" @click="formData.noticePic.length == 1 ? formData.noticePic.splice(formData.noticePic.length - 1, 0) : formData.noticePic.splice(formData.noticePic.length - 1, 1)">- 删除</a>
+        </p>
+        <van-cell-group class="van-hairline--bottom" :border="false" style="padding-bottom: 26px;">
+          <div style="display: flex;flex-wrap: wrap;">
+            <upload-picture v-for="(item, index) in formData.noticePic" :key="index" :index="index"
+            :sPictureUrl="item" :fSetPicturUrl="setNoticePictureUrl" style="margin-left: 10px;margin-bottom: 10px;" />
+          </div>
+        </van-cell-group>
+
+        <p class="title-pic" style="margin: 0;padding-top: 37px;">
+          2.中华人民共和国海关进口货物报关单
+        </p>
+
+        <div style="margin-bottom: 10px;">
+          <a href="javascript: void(0);" class="add-btn" @click="formData.declarationPic.push('')">+新增</a>
+          <a href="javascript: void(0);" class="add-btn" @click="formData.declarationPic.length == 1 ? formData.declarationPic.splice(formData.declarationPic.length - 1, 0) : formData.declarationPic.splice(formData.declarationPic.length - 1, 1)">- 删除</a>
+        </div>
+
+        <van-cell-group class="van-hairline--bottom" :border="false" style="padding-bottom: 26px;">
+          <div style="display: flex;flex-wrap: wrap;">
+            <upload-picture v-for="(item, index) in formData.declarationPic" :key="index" :index="index"
+            :sPictureUrl="item" :fSetPicturUrl="setDeclarationPictureUrl" style="margin-left: 10px;margin-bottom: 10px;" />
+          </div>
+        </van-cell-group>
+
+        <div class="flex-center-y">
+          <p class="title-pic" style="margin: 0 0 22px 0;padding-top: 37px;">
+            3.合同或销售证明
+          </p>
+          <a href="javascript: void(0);" class="add-btn" @click="formData.contractPic.push('')">+新增</a>
+          <a href="javascript: void(0);" class="add-btn" @click="formData.contractPic.length == 1 ? formData.contractPic.splice(formData.contractPic.length - 1, 0) : formData.contractPic.splice(formData.contractPic.length - 1, 1)">- 删除</a>
+        </div>
+        <van-cell-group class="van-hairline--bottom" :border="false" style="padding-bottom: 26px;">
+          <div style="display: flex;flex-wrap: wrap;">
+            <upload-picture v-for="(item, index) in formData.contractPic" :key="index" :index="index"
+            :sPictureUrl="item" :fSetPicturUrl="setContractPictureUrl" style="margin-left: 10px;margin-bottom: 10px;" />
+          </div>
+        </van-cell-group>
+
+        <van-cell-group class="van-hairline--bottom" :border="false" style="padding: 20px 0;">
+          <van-field label="总量" placeholder="请输入总量" @blur="handleInputBlur('amount')"
+          v-model="formData.amount" required :error-message="errMsg.amountErrMsg">
+            <span slot="button" style="color: #333333;">m³</span>
+          </van-field>
+        </van-cell-group>
+
+        <p class="wood-cert-card__tips">注：此次开证总量</p>
+      </div>
+    </div>
+
+    <div class="wood-cert__btn change-button-background">
+      <van-button size="large" round type="primary" @click="submit">提交</van-button>
+    </div>
+  </div>
+</template>
+
+<script>
+import UploadPicture from '../../components/UploadPicture';
+
+export default {
+  name: 'BoardCert',
+  components: {
+    UploadPicture
+  },
+  data() {
+    return {
+      formData: {
+        noticePic: [''],
+        declarationPic: [''],
+        contractPic: [''],
+        amount: ''
+      },
+      errMsg: {
+        amountErrMsg: ''
+      }
+    }
+  },
+  methods: {
+    submit() {
+      if(this.validate()) {
+        let data = JSON.parse(JSON.stringify(this.formData));
+        data.contractPic = data.contractPic.toString();
+        data.declarationPic = data.declarationPic.toString();
+        data.noticePic = data.noticePic.toString();
+        this.$http({
+          url: '/cert/addBoardCert',
+          method: 'POST',
+          data
+        }).then((res) => {
+          if(res && res.data.code == 0) {
+            this.$toast.success('添加板材类开证单成功');
+            window.$storage.set('hasCert', true);
+            if(window.$storage.get('isReg')) {
+              this.$router.push({name: 'chooseCert'});
+            }
+            else {
+              this.$router.push({name: 'home'});
+            }
+          }
+        });
+      }
+    },
+    handleInputBlur(inputName) {
+      if(this.formData[inputName] == '') {
+        this.errMsg[inputName + 'ErrMsg'] = '此项不能为空';
+      }
+      else {
+        this.errMsg[inputName + 'ErrMsg'] = '';
+      }
+    },
+    validate() {
+      let bFlag = true;
+      if(this.formData.amount == '') {
+        this.errMsg.amountErrMsg = '此项不能为空';
+        bFlag = false;
+      }
+      for(let i of this.formData.noticePic) {
+        if(i == '') {
+          this.$toast('通关无纸化放行通知单不能有为空的项');
+          return false;
+        }
+      }
+      for(let i of this.formData.declarationPic) {
+        if(i == '') {
+          this.$toast('中华人民共和国海关进口货物报关单不能有为空的项');
+          return false;
+        }
+      }
+      for(let i of this.formData.contractPic) {
+        if(i == '') {
+          this.$toast('合同或销售证明不能有为空的项');
+          return false;
+        }
+      }
+
+      return bFlag;
+    },
+    setNoticePictureUrl(index, url) {
+      this.$set(this.formData.noticePic, index, url);
+    },
+    setContractPictureUrl(index, url) {
+      this.$set(this.formData.contractPic, index, url);
+    },
+    setDeclarationPictureUrl(index, url) {
+      this.$set(this.formData.declarationPic, index, url);
+    },
+    goBack() {
+      window.history.back();
+    }
+  }
+}
+</script>
