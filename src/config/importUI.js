@@ -32,3 +32,9 @@ Vue.use(Tabbar).use(TabbarItem);
 
 import { Loading } from 'vant';
 Vue.use(Loading);
+
+import { Popup } from 'vant';
+Vue.use(Popup);
+
+import { SwitchCell } from 'vant';
+Vue.use(SwitchCell);

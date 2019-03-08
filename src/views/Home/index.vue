@@ -46,6 +46,7 @@
     justify-content: center;
     color: #FFF;
     font-size: 25px;
+    margin: 0;
   }
 </style>
 
@@ -76,10 +77,10 @@
 
     <van-tabbar v-model="active">
       <van-tabbar-item icon="clock-o">申请记录</van-tabbar-item>
-      <div class="change-tabbar-icon">
-        <van-tabbar-item icon="photograph"></van-tabbar-item>
-      </div>
-      <van-tabbar-item icon="user-o">企业管理</van-tabbar-item>
+      <!-- <div class="change-tabbar-icon"> -->
+        <van-tabbar-item icon="photograph" class="change-tabbar-icon flex-center-xy"></van-tabbar-item>
+      <!-- </div> -->
+      <van-tabbar-item icon="user-o" :to="{name: 'companySetting'}">企业管理</van-tabbar-item>
     </van-tabbar>
   </div>
 </template>

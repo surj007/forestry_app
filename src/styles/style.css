@@ -9,6 +9,10 @@ textarea {
   width: auto;
   min-width: 90px;
 }
+.van-popup--right {
+  height: 100%;
+  width: 100%;
+}
 .change-button-background .van-button--primary {
   background-image: url('../assets/button.png');
   background-size: 100% 100%;

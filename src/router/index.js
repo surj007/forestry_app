@@ -56,6 +56,11 @@ export default new Router({
       component: () => import('../views/Setting')
     },
     {
+      path: '/companySetting',
+      name: 'companySetting',
+      component: () => import('../views/CompanySetting')
+    },
+    {
       path: '*',
       redirect: '/home'
     }
