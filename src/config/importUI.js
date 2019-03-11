@@ -38,3 +38,7 @@ Vue.use(Popup);
 
 import { SwitchCell } from 'vant';
 Vue.use(SwitchCell);
+
+import { RadioGroup, Radio } from 'vant';
+Vue.use(RadioGroup);
+Vue.use(Radio);

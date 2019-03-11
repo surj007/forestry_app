@@ -23,7 +23,8 @@
 
 <template>
   <div class="set-employee">
-    <van-nav-bar title="添加业务员" right-text="跳过" fixed @click-right="$router.push({name: 'chooseCert'})" />
+    <van-nav-bar title="修改业务员" left-arrow @click-left="$router.push({name: 'setCompanyInfo'})" fixed v-if="!$window.$storage.get('isReg')" />
+    <van-nav-bar title="添加业务员" right-text="跳过" fixed @click-right="$router.push({name: 'chooseCert'})" v-else />
 
     <employee-card ref="employee-card" v-for="(item, index) in employee" :key="index" v-model="employee[index]" :index="index" @del-card="handleDelCard" />
 
@@ -37,7 +38,8 @@
     </div>
 
     <div class="set-employee-btn change-button-background">
-      <van-button size="large" round type="primary" @click="submit">提交</van-button>
+      <van-button size="large" round type="primary" @click="submit" v-if="$store.getters.oCompanyInfo.status === 2 || $store.getters.oCompanyInfo.status === 3">提交</van-button>
+      <van-button size="large" round type="primary" @click="$router.push({name: 'companySetting'})" v-if="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4">返回</van-button>
     </div>
   </div>
 </template>
@@ -50,6 +52,11 @@ export default {
   components: {
     EmployeeCard
   },
+  created() {
+    if(!window.$storage.get('isReg')) {
+      this.getEmployee();
+    }
+  },
   data() {
     return {
       employee: [
@@ -60,11 +67,28 @@ export default {
           cardFrontPic: '',
           cardOppositePic: ''
         }
-      ]
+      ],
+      employeeInit: []
     }
   },
   methods: {
+    getEmployee() {
+      this.$http({
+        url: '/employee/getEmployee',
+        method: 'GET'
+      }).then((res) => {
+        if(res && res.data.code == 0) {
+          this.employeeInit = JSON.parse(JSON.stringify(res.data.data));
+          this.employee = res.data.data;
+        }
+      });
+    },
     submit() {
+      if(window.$underscore.isEqual(this.employeeInit, this.employee)) {
+        this.$router.push({name: 'companySetting'});
+        return;
+      }
+
       let flag = true;
       for(let i in this.employee) {
         if(!this.$refs['employee-card'][i].validate()) {
@@ -73,7 +97,7 @@ export default {
       }
       if(flag) {
         this.$http({
-          url: '/employee/addEmployee',
+          url: '/employee/editEmployee',
           method: 'POST',
           data: {
             employee: this.employee
@@ -83,6 +107,9 @@ export default {
             this.$toast.success('修改业务员成功');
             if(window.$storage.get('isReg')) {
               this.$router.push({name: 'chooseCert'});
+            }
+            else {
+              this.$router.push({name: 'companySetting'});
             }
           }
         });

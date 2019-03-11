@@ -65,12 +65,13 @@
       <div style="margin-left: 12px;">
         <p class="title-pic" style="margin: 0 0 22px 0;padding-top: 37px;">
           1.通关无纸化放行通知单
-          <a href="javascript: void(0);" class="add-btn" @click="formData.noticePic.push('')">+新增</a>
-          <a href="javascript: void(0);" class="add-btn" @click="formData.noticePic.length == 1 ? formData.noticePic.splice(formData.noticePic.length - 1, 0) : formData.noticePic.splice(formData.noticePic.length - 1, 1)">- 删除</a>
+          <a href="javascript: void(0);" class="add-btn" @click="formData.noticePic.push('')" v-if="!$route.params.create_time">+新增</a>
+          <a href="javascript: void(0);" class="add-btn" v-if="!$route.params.create_time"
+          @click="formData.noticePic.length == 1 ? formData.noticePic.splice(formData.noticePic.length - 1, 0) : formData.noticePic.splice(formData.noticePic.length - 1, 1)">- 删除</a>
         </p>
         <van-cell-group class="van-hairline--bottom" :border="false" style="padding-bottom: 26px;">
           <div style="display: flex;flex-wrap: wrap;">
-            <upload-picture v-for="(item, index) in formData.noticePic" :key="index" :index="index"
+            <upload-picture v-for="(item, index) in formData.noticePic" :key="index" :index="index" :canUpload="!$route.params.create_time"
             :sPictureUrl="item" :fSetPicturUrl="setNoticePictureUrl" style="margin-left: 10px;margin-bottom: 10px;" />
           </div>
         </van-cell-group>
@@ -80,13 +81,14 @@
         </p>
 
         <div style="margin-bottom: 10px;">
-          <a href="javascript: void(0);" class="add-btn" @click="formData.declarationPic.push('')">+新增</a>
-          <a href="javascript: void(0);" class="add-btn" @click="formData.declarationPic.length == 1 ? formData.declarationPic.splice(formData.declarationPic.length - 1, 0) : formData.declarationPic.splice(formData.declarationPic.length - 1, 1)">- 删除</a>
+          <a href="javascript: void(0);" class="add-btn" @click="formData.declarationPic.push('')" v-if="!$route.params.create_time">+新增</a>
+          <a href="javascript: void(0);" class="add-btn" v-if="!$route.params.create_time" 
+          @click="formData.declarationPic.length == 1 ? formData.declarationPic.splice(formData.declarationPic.length - 1, 0) : formData.declarationPic.splice(formData.declarationPic.length - 1, 1)">- 删除</a>
         </div>
 
         <van-cell-group class="van-hairline--bottom" :border="false" style="padding-bottom: 26px;">
           <div style="display: flex;flex-wrap: wrap;">
-            <upload-picture v-for="(item, index) in formData.declarationPic" :key="index" :index="index"
+            <upload-picture v-for="(item, index) in formData.declarationPic" :key="index" :index="index" :canUpload="!$route.params.create_time"
             :sPictureUrl="item" :fSetPicturUrl="setDeclarationPictureUrl" style="margin-left: 10px;margin-bottom: 10px;" />
           </div>
         </van-cell-group>
@@ -95,12 +97,13 @@
           <p class="title-pic" style="margin: 0 0 22px 0;padding-top: 37px;">
             3.合同或销售证明
           </p>
-          <a href="javascript: void(0);" class="add-btn" @click="formData.contractPic.push('')">+新增</a>
-          <a href="javascript: void(0);" class="add-btn" @click="formData.contractPic.length == 1 ? formData.contractPic.splice(formData.contractPic.length - 1, 0) : formData.contractPic.splice(formData.contractPic.length - 1, 1)">- 删除</a>
+          <a href="javascript: void(0);" class="add-btn" @click="formData.contractPic.push('')" v-if="!$route.params.create_time">+新增</a>
+          <a href="javascript: void(0);" class="add-btn" v-if="!$route.params.create_time"
+          @click="formData.contractPic.length == 1 ? formData.contractPic.splice(formData.contractPic.length - 1, 0) : formData.contractPic.splice(formData.contractPic.length - 1, 1)">- 删除</a>
         </div>
         <van-cell-group class="van-hairline--bottom" :border="false" style="padding-bottom: 26px;">
           <div style="display: flex;flex-wrap: wrap;">
-            <upload-picture v-for="(item, index) in formData.contractPic" :key="index" :index="index"
+            <upload-picture v-for="(item, index) in formData.contractPic" :key="index" :index="index" :canUpload="!$route.params.create_time"
             :sPictureUrl="item" :fSetPicturUrl="setContractPictureUrl" style="margin-left: 10px;margin-bottom: 10px;" />
           </div>
         </van-cell-group>
@@ -117,7 +120,7 @@
     </div>
 
     <div class="wood-cert__btn change-button-background">
-      <van-button size="large" round type="primary" @click="submit">提交</van-button>
+      <van-button size="large" round type="primary" @click="submit" v-if="!$route.params.create_time">提交</van-button>
     </div>
   </div>
 </template>
@@ -129,6 +132,14 @@ export default {
   name: 'BoardCert',
   components: {
     UploadPicture
+  },
+  created() {
+    if(this.$route.params.create_time) {
+      this.formData.noticePic = this.$route.params.noticePic.split(',');
+      this.formData.contractPic = this.$route.params.contractPic.split(',');
+      this.formData.declarationPic = this.$route.params.declarationPic.split(',');
+      this.formData.amount = this.$route.params.amount;
+    }
   },
   data() {
     return {

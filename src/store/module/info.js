@@ -25,6 +25,9 @@ const info = {
         method: 'GET'
       }).then((res) => {
         if(res && res.data.code == 0) {
+          res.data.data.companyType = res.data.data.companyType.split(',');
+          res.data.data.source = res.data.data.source.split(',');
+          res.data.data.outCityCompany = res.data.data.outCityCompany == 1;
           context.commit('setCompanyInfo', res.data.data || {});
         }
       });

@@ -65,7 +65,8 @@
 
 <template>
   <div class="setCompanyInfo" :style="{background: sComponent == 'picture' ? '#F8F8F8' : '#FFFFFF'}">
-    <van-nav-bar fixed :left-arrow="sComponent == 'info' ? false : true" @click-left="sComponent = 'info'" :title="sComponent == 'info' ? '企业信息' : '企业证件照上传'" />
+    <van-nav-bar fixed left-arrow @click-left="$router.push({name: 'companySetting'})" title="企业信息" v-if="!$window.$storage.get('isReg') && sComponent === 'info'" />
+    <van-nav-bar fixed :left-arrow="sComponent == 'info' ? false : true" @click-left="sComponent = 'info'" :title="sComponent == 'info' ? '企业信息' : '企业证件照上传'" v-else />
 
     <div class="info" v-if="sComponent == 'info'">
       <p class="title">企业基本信息</p>
@@ -222,15 +223,15 @@
       <div class="card">
         <p class="title-pic" style="margin: 0 0 22px 0;padding-top: 37px;">企业营业执照</p>
         <van-cell-group class="van-hairline--bottom" :border="false" style="padding-bottom: 26px;">
-          <upload-picture :sPictureUrl="oFormData.licencePic" :fSetPicturUrl="setLicencePictureUrl" />
+          <upload-picture :sPictureUrl="oFormData.licencePic" :fSetPicturUrl="setLicencePictureUrl" :canUpload="!($store.getters.oCompanyInfo.status == 1 || $store.getters.oCompanyInfo.status == 4)" />
         </van-cell-group>
 
         <p class="title-pic" style="margin: 25px 0 10px 0;">法人身份证</p>
         <p class="tip-pic">需上传清晰的身份证正反面照片</p>
         <van-cell-group class="van-hairline--bottom" :border="false" style="padding-bottom: 26px;">
           <div style="display: flex;">
-            <upload-picture :sPictureUrl="oFormData.cardFrontPic" :fSetPicturUrl="setCardFrontPictureUrl" style="margin-right: 15px;" />
-            <upload-picture :sPictureUrl="oFormData.cardOppositePic" :fSetPicturUrl="setCardOppositePictureUrl" />
+            <upload-picture :sPictureUrl="oFormData.cardFrontPic" :fSetPicturUrl="setCardFrontPictureUrl" style="margin-right: 15px;" :canUpload="!($store.getters.oCompanyInfo.status == 1 || $store.getters.oCompanyInfo.status == 4)" />
+            <upload-picture :sPictureUrl="oFormData.cardOppositePic" :fSetPicturUrl="setCardOppositePictureUrl" :canUpload="!($store.getters.oCompanyInfo.status == 1 || $store.getters.oCompanyInfo.status == 4)" />
           </div>
         </van-cell-group>
 
@@ -239,7 +240,7 @@
           <p class="download download-title" @click="savePic2SysGallery('林业植物检疫监管告知书')">下载</p>
         </div>
         <van-cell-group class="van-hairline--bottom" :border="false" style="padding-bottom: 26px;">
-          <upload-picture :sPictureUrl="oFormData.notificationPic" :fSetPicturUrl="setNotificationPictureUrl" />
+          <upload-picture :sPictureUrl="oFormData.notificationPic" :fSetPicturUrl="setNotificationPictureUrl" :canUpload="!($store.getters.oCompanyInfo.status == 1 || $store.getters.oCompanyInfo.status == 4)" />
         </van-cell-group>
 
         <div class="flex-space-between">
@@ -247,12 +248,13 @@
           <p class="download download-title" @click="savePic2SysGallery('木材调运检疫开证承诺书')">下载</p>
         </div>
         <van-cell-group class="van-hairline--bottom" :border="false" style="padding-bottom: 26px;">
-          <upload-picture :sPictureUrl="oFormData.commitPic" :fSetPicturUrl="setCommitPictureUrl" />
+          <upload-picture :sPictureUrl="oFormData.commitPic" :fSetPicturUrl="setCommitPictureUrl" :canUpload="!($store.getters.oCompanyInfo.status == 1 || $store.getters.oCompanyInfo.status == 4)" />
         </van-cell-group>
       </div>
 
       <div class="btn-pic change-button-background">
-        <van-button size="large" round type="primary" @click="submit">提交企业信息</van-button>
+        <van-button size="large" round type="primary" @click="submit" v-if="$store.getters.oCompanyInfo.status === 2 || $store.getters.oCompanyInfo.status === 3">提交企业信息</van-button>
+        <van-button size="large" round type="primary" @click="$router.push({name: 'setEmployee'})" v-if="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4">查看业务员信息</van-button>
       </div>
     </div>
   </div>
@@ -265,6 +267,11 @@ export default {
   name: 'SetCompanyInfo',
   components: {
     UploadPicture
+  },
+  created() {
+    if(!window.$storage.get('isReg')) {
+      this.oFormData = JSON.parse(JSON.stringify(this.$store.getters.oCompanyInfo));
+    }
   },
   data() {
     return {
@@ -311,6 +318,11 @@ export default {
   },
   methods: {
     submit() {
+      if(window.$underscore.isEqual(this.oFormData, this.$store.getters.oCompanyInfo)) {
+        this.$router.push({name: 'setEmployee'});
+        return;
+      }
+
       if(this.validatePicForm()) {
         return;
       }

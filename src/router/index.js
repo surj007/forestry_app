@@ -61,6 +61,11 @@ export default new Router({
       component: () => import('../views/CompanySetting')
     },
     {
+      path: '/applyRecord',
+      name: 'applyRecord',
+      component: () => import('../views/ApplyRecord')
+    },
+    {
       path: '*',
       redirect: '/home'
     }

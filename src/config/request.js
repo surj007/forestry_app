@@ -33,6 +33,9 @@ request.interceptors.response.use((res) => {
     console.warn(res.config.url, res.data.message);
     window.$vm.$toast.fail(res.data.message);
   }
+  else {
+    window.$storage.set('token', window.$storage.get('token'));
+  }
   
   return res;
 }, (e) => {

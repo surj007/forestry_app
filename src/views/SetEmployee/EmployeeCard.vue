@@ -61,9 +61,9 @@
 
       <van-cell-group :border="false" style="margin-top: 20px;">
         <div style="display: flex;">
-          <upload-picture style="margin-right: 15px;" :sPictureUrl="value.socialSecurityPic" :fSetPicturUrl="setSocialSecurityPictureUrl" />
-          <upload-picture style="margin-right: 15px;" :sPictureUrl="value.cardFrontPic" :fSetPicturUrl="setCardFrontPictureUrl" />
-          <upload-picture :sPictureUrl="value.cardOppositePic" :fSetPicturUrl="setCardOppositePictureUrl" />
+          <upload-picture style="margin-right: 15px;" :sPictureUrl="value.socialSecurityPic" :fSetPicturUrl="setSocialSecurityPictureUrl":canUpload="!($store.getters.oCompanyInfo.status == 1 || $store.getters.oCompanyInfo.status == 4)" />
+          <upload-picture style="margin-right: 15px;" :sPictureUrl="value.cardFrontPic" :fSetPicturUrl="setCardFrontPictureUrl":canUpload="!($store.getters.oCompanyInfo.status == 1 || $store.getters.oCompanyInfo.status == 4)" />
+          <upload-picture :sPictureUrl="value.cardOppositePic" :fSetPicturUrl="setCardOppositePictureUrl":canUpload="!($store.getters.oCompanyInfo.status == 1 || $store.getters.oCompanyInfo.status == 4)" />
         </div>
       </van-cell-group>
     </div>

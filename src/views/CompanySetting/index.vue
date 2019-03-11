@@ -83,7 +83,7 @@
       <van-icon name="bulb-o" slot="left" size="0.7rem">
         <sup class="dot"></sup>
       </van-icon>
-      <van-icon name="photo-o" slot="right" size="0.7rem" />
+      <van-icon name="photo-o" slot="right" size="0.65rem" />
     </van-nav-bar>
 
     <div class="company-setting-top-card">
@@ -93,13 +93,14 @@
           <div class="company-setting-top-card-header__text">{{ $store.getters.oCompanyInfo.name }}</div>
         </div>
 
-        <van-icon name="arrow" color="#FFF" size="0.5rem" class="company-setting-top-card-header__icon"  @click="$router.push({name: 'setCompanyInfo'})" />
+        <van-icon name="arrow" color="#FFF" size="0.5rem" v-if="$window.$storage.get('user').boss === 0"
+        class="company-setting-top-card-header__icon"  @click="$router.push({name: 'setCompanyInfo'})" />
       </div>
 
       <div class="company-setting-top-card-middle">{{ $store.getters.oCompanyInfo.code }}</div>
 
       <div class="flex-center-y company-setting-top-card-footer">
-        <div class="company-setting-top-card-footer__text">审核中</div>
+        <div class="company-setting-top-card-footer__text">{{ status }}</div>
         <div class="company-setting-top-card-footer__time">{{ $store.getters.oCompanyInfo.last_modify_time }}</div>
       </div>
     </div>
@@ -116,7 +117,7 @@
           </div>
 
           <div style="font-size: 0;">
-            <span class="company-setting-middle-card__amount">450</span>
+            <span class="company-setting-middle-card__amount">{{ amount.woodCertAmount }}</span>
             <span class="company-setting-middle-card__unit">m³</span>
           </div>
         </div>
@@ -133,7 +134,7 @@
           </div>
 
           <div style="font-size: 0;">
-            <span class="company-setting-middle-card__amount">450</span>
+            <span class="company-setting-middle-card__amount">{{ amount.boardCertAmount }}</span>
             <span class="company-setting-middle-card__unit">m³</span>
           </div>
         </div>
@@ -141,7 +142,7 @@
     </van-row>
 
     <van-tabbar v-model="active">
-      <van-tabbar-item icon="clock-o">申请记录</van-tabbar-item>
+      <van-tabbar-item icon="clock-o" :to="{name: 'applyRecord'}">申请记录</van-tabbar-item>
       <van-tabbar-item icon="orders-o" :to="{name: 'home'}">业务办理</van-tabbar-item>
       <van-tabbar-item icon="user-o">企业管理</van-tabbar-item>
     </van-tabbar>
@@ -151,9 +152,46 @@
 <script>
 export default {
   name: 'CompanySetting',
+  created() {
+    this.$store.dispatch('getCompanyInfo', this);
+    this.getCertAmount();
+  },
+  computed: {
+    status() {
+      switch (this.$store.getters.oCompanyInfo.status) {
+        case 1: {
+          return '审核中'
+        }
+        case 2: {
+          return '已注册'
+        }
+        case 3: {
+          return '未通过'
+        }
+        case 4: {
+          return '已注销'
+        }
+        default:
+          return;
+      }
+    }
+  },
   data() {
     return {
-      active: 2
+      active: 2,
+      amount: {}
+    }
+  },
+  methods: {
+    getCertAmount() {
+      this.$http({
+        url: '/cert/getCertAmount',
+        method: 'GET'
+      }).then((res) => {
+        if(res && res.data.code == 0) {
+          this.amount = res.data.data;
+        }
+      });
     }
   }
 }
