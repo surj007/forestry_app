@@ -72,7 +72,7 @@
 
     <div class="home-card home-card--third">
       <p class="home-card__title">木材运输证与植物检疫申请</p>
-      <div class="home-card__btn flex-center-xy">申请</div>
+      <div class="home-card__btn flex-center-xy" @click="$router.push({name: 'plantCert'})">申请</div>
     </div>
 
     <van-tabbar v-model="active">
@@ -101,6 +101,23 @@ export default {
     return {
       active: 1
     }
+  },
+  methods: {
+    takePicture() {
+      let camera = window.plus.camera.getCamera();
+      camera.captureImage((capturedFile) => {
+        this.getPosition((p) => {
+          let key = capturedFile.split('/')[1];
+          this.store.setItem(key, JSON.stringify({position: p}));
+        });
+      });
+    },
+    getPosition(cb) {
+      window.plus.geolocation.getCurrentPosition((position) => {
+        console.log(position.addresses);
+        cb(position.coords);
+      });
+    },
   }
 }
 </script>

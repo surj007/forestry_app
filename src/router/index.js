@@ -46,6 +46,11 @@ export default new Router({
       component: () => import('../views/BoardCert')
     },
     {
+      path: '/plantCert',
+      name: 'plantCert',
+      component: () => import('../views/PlantCert')
+    },
+    {
       path: '/home',
       name: 'home',
       component: () => import('../views/Home')

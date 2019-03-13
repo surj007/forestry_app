@@ -158,9 +158,11 @@ export default {
     submit() {
       if(this.validate()) {
         let data = JSON.parse(JSON.stringify(this.formData));
+        
         data.contractPic = data.contractPic.toString();
         data.declarationPic = data.declarationPic.toString();
         data.noticePic = data.noticePic.toString();
+
         this.$http({
           url: '/cert/addBoardCert',
           method: 'POST',

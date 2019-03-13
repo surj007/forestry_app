@@ -2,8 +2,10 @@ const info = {
   state: {
     oCompanyInfo: {},
     oBasicInfo: {
-      '企业类型': [],
-      '原料来源': []
+      '企业类型': {info: []},
+      '原料来源': {info: []},
+      '植物产品名称': {info: []},
+      '品种': {info: []}
     },
     oFileInfo: {}
   },

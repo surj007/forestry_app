@@ -116,8 +116,8 @@
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
         <van-field label="企业类型" required disabled :error-message="oErrMsg.companyTypeErrMsg" @blur="handleInputBlur('companyType', 'array')">
           <van-checkbox-group slot="button" v-model="oFormData.companyType">
-            <template v-for="item in $store.getters.oBasicInfo['企业类型'].info">
-              <van-checkbox style="margin-bottom: 7px;" :name="item" shape="square">{{ item }}</van-checkbox>
+            <template v-for="(item, index) in $store.getters.oBasicInfo['企业类型'].info">
+              <van-checkbox :key="index" style="margin-bottom: 7px;" :name="item" shape="square">{{ item }}</van-checkbox>
             </template>
           </van-checkbox-group>
         </van-field>
@@ -126,8 +126,8 @@
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
         <van-field label="原料来源" required disabled :error-message="oErrMsg.sourceErrMsg" @blur="handleInputBlur('source', 'array')">
           <van-checkbox-group slot="button" v-model="oFormData.source">
-            <template v-for="item in $store.getters.oBasicInfo['原料来源'].info">
-              <van-checkbox style="margin-bottom: 7px;" :name="item" shape="square">{{ item }}</van-checkbox>
+            <template v-for="(item, index) in $store.getters.oBasicInfo['原料来源'].info">
+              <van-checkbox :key="index" style="margin-bottom: 7px;" :name="item" shape="square">{{ item }}</van-checkbox>
             </template>
           </van-checkbox-group>
         </van-field>

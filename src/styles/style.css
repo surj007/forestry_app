@@ -13,6 +13,25 @@ textarea {
   height: 100%;
   width: 100%;
 }
+.change-cell-title-width-default .van-field .van-cell__title {
+  max-width: 3.2rem;
+}
+.change-cell-title-width-large .van-field .van-cell__title {
+  max-width: 4.5rem;
+}
+.change-field__error-message .van-field__error-message {
+  text-align: right;
+}
+.change-cell__value .van-cell__value {
+  text-align: start;
+}
+.change-center-y-cell__value .van-cell__value {
+  display: flex;
+  justify-content: flex-end;
+}
+.change-field__body .van-field__body {
+  margin-top: 5px;
+}
 .change-button-background .van-button--primary {
   background-image: url('../assets/button.png');
   background-size: 100% 100%;

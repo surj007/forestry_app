@@ -167,6 +167,12 @@ export default {
               this.applyData.push(i);
             }
           }
+          if(res.data.data.plantCert) {
+            for(let i of res.data.data.plantCert) {
+              i.type = 2;
+              this.applyData.push(i);
+            }
+          }
         }
       });
     },

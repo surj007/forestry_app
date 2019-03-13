@@ -68,7 +68,7 @@
 
         <van-col span="6">
           <div class="apply-card-main__th">开证总量</div>
-          <div class="apply-card-main__td">{{ data.amount }}m³</div>
+          <div class="apply-card-main__td">{{ data.amount || data.car_amount * data.every_car_amount }}m³</div>
         </van-col>
 
         <van-col span="6">
@@ -78,7 +78,7 @@
 
         <van-col span="6" v-if="data.status === 2">
           <div class="apply-card-main__th">领证窗口</div>
-          <div class="apply-card-main__td">{{ data.window }}</div>
+          <div class="apply-card-main__td">{{ data.windows }}</div>
         </van-col>
       </van-row>
     </main>
@@ -144,7 +144,10 @@ export default {
         });
       }
       else {
-
+        this.$router.push({
+          name: 'plantCert',
+          params: this.data
+        });
       }
     }
   }
