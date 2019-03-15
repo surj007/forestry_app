@@ -71,6 +71,11 @@ export default new Router({
       component: () => import('../views/ApplyRecord')
     },
     {
+      path: '/certUpload',
+      name: 'certUpload',
+      component: () => import('../views/CertUpload')
+    },
+    {
       path: '*',
       redirect: '/home'
     }

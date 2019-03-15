@@ -22,11 +22,8 @@ Vue.prototype.$qs = qs;
 Vue.prototype.$http = request;
 Vue.prototype.$window = window;
 
-// document.addEventListener('plusready', () => {
-//   window.$storage.del('token');
-//   window.$storage.del('user');
-//   window.$storage.del('isReg');
-//   window.$storage.del('hasCert');
+document.addEventListener('plusready', () => {
+  window.plus.storage.clear();
   window.$vm = new Vue({
     el: '#app',
     router,
@@ -39,4 +36,4 @@ Vue.prototype.$window = window;
       }
     }
   });
-// });
+});

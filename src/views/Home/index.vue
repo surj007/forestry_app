@@ -38,8 +38,8 @@
 <style>
   .change-tabbar-icon .van-tabbar-item__icon {
     border-radius: 100%;
-    width: 50px;
-    height: 50px;
+    width: 47px;
+    height: 47px;
     background: #01B6AF;
     display: flex;
     align-items: center;
@@ -47,6 +47,7 @@
     color: #FFF;
     font-size: 25px;
     margin: 0;
+    margin-top: 1px;
   }
 </style>
 
@@ -77,7 +78,7 @@
 
     <van-tabbar v-model="active">
       <van-tabbar-item icon="clock-o" :to="{name: 'applyRecord'}">申请记录</van-tabbar-item>
-      <van-tabbar-item icon="photograph" class="change-tabbar-icon flex-center-xy"></van-tabbar-item>
+      <van-tabbar-item icon="photograph" class="change-tabbar-icon flex-center-xy" @click="takePicture"></van-tabbar-item>
       <van-tabbar-item icon="user-o" :to="{name: 'companySetting'}">企业管理</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -104,20 +105,20 @@ export default {
   },
   methods: {
     takePicture() {
-      let camera = window.plus.camera.getCamera();
-      camera.captureImage((capturedFile) => {
-        this.getPosition((p) => {
-          let key = capturedFile.split('/')[1];
-          this.store.setItem(key, JSON.stringify({position: p}));
-        });
-      });
-    },
-    getPosition(cb) {
       window.plus.geolocation.getCurrentPosition((position) => {
-        console.log(position.addresses);
-        cb(position.coords);
+        let camera = window.plus.camera.getCamera();
+        camera.captureImage((capturedFile) => {
+          window.plus.geolocation.getCurrentPosition((position) => {
+            window.$storage.merge('picture', {
+              [capturedFile.split('/')[1]]: position.addresses
+            });
+          });
+        });
+      }, (error) => {
+        console.warn('get position err: ' + error.message);
+        this.$toast('请开启定位功能后，再进行拍照');
       });
-    },
+    }
   }
 }
 </script>

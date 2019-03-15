@@ -7,6 +7,6 @@
 4、退出登陆的时候被重定向
 
 ###上线修改
-1、main文件 加上plusready、remove去掉
+1、main文件 加上plusready，删除clear
 2、requestjs baseURL打开、baseUrl地址改为47.105.67.161  
 3、storage文件，storage方式修改

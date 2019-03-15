@@ -3,6 +3,25 @@
   background: #f8f8ff;
   margin-top: 46px;
   overflow: hidden;
+  &-status {
+    min-height: 60px;
+    font-size: 14px;
+    color: #FFF;
+    &-top {
+      margin-left: 18px;
+      padding-top: 8px;
+      padding-right: 8px;
+      &__img {
+        margin-right: 8px;
+        height: 22px;
+        width: 22px;
+      }
+    }
+    &-bottom {
+      margin: 4px 0 0 48px;
+      padding-bottom: 6px;
+    }
+  }
   &-card {
     margin: 10px 10px 0 10px;
     background: #FFF;
@@ -29,12 +48,27 @@
     margin-top: 112px;
     margin-bottom: 20px;
   }
+  .title-pic {
+    font-family: 'SourceHanSansSC-regular';
+    font-size: 14px;
+    color: #333333;
+    margin: 0 0 10px 15px;
+    padding-top: 10px;
+  }
 }
 </style>
 
 <template>
   <div class="plant-cert">
     <van-nav-bar title="木材运输与植物检疫申请" left-arrow @click-left="goBack" fixed />
+
+    <div class="plant-cert-status" v-if="formData.status" :style="{backgroundColor: statusObject[formData.status].backgroundColor}">
+      <div class="flex-center-y plant-cert-status-top">
+        <img :src="statusObject[formData.status].img" alt="" class="plant-cert-status-top__img">
+        <span style="word-break: break-all;">{{ statusObject[formData.status].text }}</span>
+      </div>
+      <p class="plant-cert-status-bottom">{{ formData.create_time }}</p>
+    </div>
 
     <div class="plant-cert-card">
       <div class="plant-cert-card__header flex-center-y">
@@ -145,23 +179,57 @@
         <van-field label="车牌号" placeholder="请输入车牌号" input-align="right" required type="textarea" rows="2"
         v-model="formData.car_number" :error-message="errMsg.car_numberErrMsg" @blur="handleInputBlur('car_number')" />
       </van-cell-group>
+
+      <div v-if="formData.picture_url">
+        <p class="title-pic">
+          车辆照片
+        </p>
+        <van-cell-group class="van-hairline--bottom" :border="false" style="padding-bottom: 26px;">
+          <div style="display: flex;flex-wrap: wrap;">
+            <upload-picture v-for="(item, index) in formData.picture_url.split(',')" :key="index" :index="index" :canUpload="false"
+            :sPictureUrl="item" style="margin-left: 10px;margin-bottom: 10px;" />
+          </div>
+        </van-cell-group>
+      </div>
     </div>
 
     <div class="plant-cert-btn change-button-background">
       <van-button size="large" round type="primary" @click="submit" v-if="!this.$route.params.create_time">提交</van-button>
+      <van-button size="large" round type="primary" @click="skipNewPath" v-if="this.$route.params.create_time && this.$route.params.status === 4">上传照片</van-button>
     </div>
   </div>
 </template>
 
 <script>
+import UploadPicture from '../../components/UploadPicture';
+
 export default {
   name: 'PlantCert',
+  components: {
+    UploadPicture
+  },
   created() {
     if(this.$route.params.create_time) {
-      this.formData = this.$route.params
+      this.formData = this.$route.params;
+      this.statusObject['2'].text = `审核已通过，请至城厢镇林业局${this.formData.windows}号窗口领取`;
+      this.statusObject['3'].text = `审核未通过，被拒原因: ${this.formData.refuse_reason}`;
+
+      if(this.formData.status === 4) {
+        this.$dialog.confirm({
+          title: '提示',
+          message: '您的开证审核已通过，请尽快上传装车照片',
+          confirmButtonText: '上传',
+          cancelButtonText: '取消'
+        }).then(() => {
+          this.skipNewPath();
+        }).catch(() => {
+          
+        });
+      }
     }
   },
   data() {
+    let self = this;
     return {
       formData: {
         producing_area: '',
@@ -194,6 +262,28 @@ export default {
         transport_personErrMsg: '',
         report_numberErrMsg: '',
         car_numberErrMsg: ''
+      },
+      statusObject: {
+        1: {
+          img: require('../../assets/statusWait.png'),
+          backgroundColor: '#01B6AF',
+          text: '已提交，等待工作人员审核'
+        },
+        2: {
+          img: require('../../assets/statusHappy.png'),
+          backgroundColor: '#01B6AF',
+          text: ''
+        },
+        3: {
+          img: require('../../assets/statusSad.png'),
+          backgroundColor: '#FF8F3B',
+          text: ''
+        },
+        4: {
+          img: require('../../assets/statusHappy.png'),
+          backgroundColor: '#01B6AF',
+          text: '审核已通过，请立即上传装车照片'
+        },
       }
     }
   },
@@ -266,6 +356,9 @@ export default {
     },
     goBack() {
       window.history.back();
+    },
+    skipNewPath() {
+      this.$router.push('certUpload');
     }
   }
 }

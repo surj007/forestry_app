@@ -83,7 +83,7 @@
       <van-icon name="bulb-o" slot="left" size="0.7rem">
         <sup class="dot"></sup>
       </van-icon>
-      <van-icon name="photo-o" slot="right" size="0.65rem" />
+      <van-icon name="photo-o" slot="right" size="0.65rem" @click="isShowGalleryPopup = true" />
     </van-nav-bar>
 
     <div class="company-setting-top-card">
@@ -146,12 +146,19 @@
       <van-tabbar-item icon="orders-o" :to="{name: 'home'}">业务办理</van-tabbar-item>
       <van-tabbar-item icon="user-o">企业管理</van-tabbar-item>
     </van-tabbar>
+
+    <my-gallery v-model="isShowGalleryPopup" />
   </div>
 </template>
 
 <script>
+import MyGallery from '../../components/MyGallery';
+
 export default {
   name: 'CompanySetting',
+  components: {
+    MyGallery
+  },
   created() {
     this.$store.dispatch('getCompanyInfo', this);
     this.getCertAmount();
@@ -179,7 +186,8 @@ export default {
   data() {
     return {
       active: 2,
-      amount: {}
+      amount: {},
+      isShowGalleryPopup: false
     }
   },
   methods: {

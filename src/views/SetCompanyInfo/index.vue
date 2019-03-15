@@ -2,6 +2,25 @@
 .setCompanyInfo {
   margin-top: 46px;
   overflow: auto;
+  &-status {
+    min-height: 60px;
+    font-size: 14px;
+    color: #FFF;
+    &-top {
+      margin-left: 18px;
+      padding-top: 8px;
+      padding-right: 8px;
+      &__img {
+        margin-right: 8px;
+        height: 22px;
+        width: 22px;
+      }
+    }
+    &-bottom {
+      margin: 4px 0 0 48px;
+      padding-bottom: 6px;
+    }
+  }
   .info {
     margin-bottom: 40px;
     .title {
@@ -67,6 +86,14 @@
   <div class="setCompanyInfo" :style="{background: sComponent == 'picture' ? '#F8F8F8' : '#FFFFFF'}">
     <van-nav-bar fixed left-arrow @click-left="$router.push({name: 'companySetting'})" title="企业信息" v-if="!$window.$storage.get('isReg') && sComponent === 'info'" />
     <van-nav-bar fixed :left-arrow="sComponent == 'info' ? false : true" @click-left="sComponent = 'info'" :title="sComponent == 'info' ? '企业信息' : '企业证件照上传'" v-else />
+
+    <div class="setCompanyInfo-status" v-if="oFormData.status" :style="{backgroundColor: statusObject[oFormData.status].backgroundColor}">
+      <div class="flex-center-y setCompanyInfo-status-top">
+        <img :src="statusObject[oFormData.status].img" alt="" class="setCompanyInfo-status-top__img">
+        <span style="word-break: break-all;">{{ statusObject[oFormData.status].text }}</span>
+      </div>
+      <p class="setCompanyInfo-status-bottom">{{ oFormData.last_modify_time }}</p>
+    </div>
 
     <div class="info" v-if="sComponent == 'info'">
       <p class="title">企业基本信息</p>
@@ -271,6 +298,7 @@ export default {
   created() {
     if(!window.$storage.get('isReg')) {
       this.oFormData = JSON.parse(JSON.stringify(this.$store.getters.oCompanyInfo));
+      this.statusObject['3'].text = `审核未通过，被拒原因: ${this.oFormData.refuse_reason}`;
     }
   },
   data() {
@@ -313,6 +341,28 @@ export default {
         companyTypeErrMsg: '',
         sourceErrMsg: '',
         kindErrMsg: ''
+      },
+      statusObject: {
+        1: {
+          img: require('../../assets/statusWait.png'),
+          backgroundColor: '#01B6AF',
+          text: '已提交，等待工作人员审核'
+        },
+        2: {
+          img: require('../../assets/statusHappy.png'),
+          backgroundColor: '#01B6AF',
+          text: '已注册'
+        },
+        3: {
+          img: require('../../assets/statusSad.png'),
+          backgroundColor: '#FF8F3B',
+          text: ''
+        },
+        4: {
+          img: require('../../assets/statusSad.png'),
+          backgroundColor: '#FF8F3B',
+          text: '已注销'
+        }
       }
     }
   },

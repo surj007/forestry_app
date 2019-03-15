@@ -4,6 +4,25 @@
   margin-top: 46px;
   overflow: hidden;
   padding-bottom: 36px;
+  &-status {
+    min-height: 60px;
+    font-size: 14px;
+    color: #FFF;
+    &-top {
+      margin-left: 18px;
+      padding-top: 8px;
+      padding-right: 8px;
+      &__img {
+        margin-right: 8px;
+        height: 22px;
+        width: 22px;
+      }
+    }
+    &-bottom {
+      margin: 4px 0 0 48px;
+      padding-bottom: 6px;
+    }
+  }
   &-card {
     margin: 10px 10px 0 10px;
     background: #FFF;
@@ -54,6 +73,14 @@
 <template>
   <div class="wood-cert">
     <van-nav-bar title="板材类开证" left-arrow @click-left="goBack" fixed />
+
+    <div class="wood-cert-status" v-if="formData.status" :style="{backgroundColor: statusObject[formData.status].backgroundColor}">
+      <div class="flex-center-y wood-cert-status-top">
+        <img :src="statusObject[formData.status].img" alt="" class="wood-cert-status-top__img">
+        <span style="word-break: break-all;">{{ statusObject[formData.status].text }}</span>
+      </div>
+      <p class="wood-cert-status-bottom">{{ formData.create_time }}</p>
+    </div>
 
     <div class="wood-cert-card">
       <div class="wood-cert-card__header flex-center-y">
@@ -135,10 +162,12 @@ export default {
   },
   created() {
     if(this.$route.params.create_time) {
+      this.formData = this.$route.params;
       this.formData.noticePic = this.$route.params.noticePic.split(',');
       this.formData.contractPic = this.$route.params.contractPic.split(',');
       this.formData.declarationPic = this.$route.params.declarationPic.split(',');
-      this.formData.amount = this.$route.params.amount;
+      this.statusObject['2'].text = `审核已通过，请至城厢镇林业局${this.formData.windows}号窗口领取`;
+      this.statusObject['3'].text = `审核未通过，被拒原因: ${this.formData.refuse_reason}`;
     }
   },
   data() {
@@ -151,6 +180,23 @@ export default {
       },
       errMsg: {
         amountErrMsg: ''
+      },
+      statusObject: {
+        1: {
+          img: require('../../assets/statusWait.png'),
+          backgroundColor: '#01B6AF',
+          text: '已提交，等待工作人员审核'
+        },
+        2: {
+          img: require('../../assets/statusHappy.png'),
+          backgroundColor: '#01B6AF',
+          text: ''
+        },
+        3: {
+          img: require('../../assets/statusSad.png'),
+          backgroundColor: '#FF8F3B',
+          text: ''
+        }
       }
     }
   },
