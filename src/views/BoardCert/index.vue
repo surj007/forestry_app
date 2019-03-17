@@ -161,6 +161,7 @@ export default {
     UploadPicture
   },
   created() {
+    window.scrollTo(0, 0);
     if(this.$route.params.create_time) {
       this.formData = this.$route.params;
       this.formData.noticePic = this.$route.params.noticePic.split(',');

@@ -209,6 +209,7 @@ export default {
     UploadPicture
   },
   created() {
+    window.scrollTo(0, 0);
     if(this.$route.params.create_time) {
       this.formData = this.$route.params;
       this.statusObject['2'].text = `审核已通过，请至城厢镇林业局${this.formData.windows}号窗口领取`;

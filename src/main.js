@@ -23,7 +23,7 @@ Vue.prototype.$http = request;
 Vue.prototype.$window = window;
 
 document.addEventListener('plusready', () => {
-  window.plus.storage.clear();
+  // window.plus.storage.clear();
   window.$vm = new Vue({
     el: '#app',
     router,

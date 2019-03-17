@@ -1,13 +1,14 @@
 <style lang="less" scoped>
 .apply-card {
   height: 126px;
-  border-radius: 5px;
   margin: 20px 8px 0 8px;
   header {
     height: 47px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     img {
       width: 26px;
       height: 22px;
@@ -28,6 +29,8 @@
   main {
     height: 79px;
     background: #FFF;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     .apply-card-main {
       &__th {
         text-align: center;

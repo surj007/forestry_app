@@ -88,7 +88,7 @@ export default {
           for (let i = 0; i < subFiles.length; i++) {
             window.plus.io.resolveLocalFileSystemURL(`_doc/${subFiles[i].name}`, (fileEntry) => {
               fileEntry.getMetadata((metadata) => {
-                let time = metadata.modificationTime.toLocaleString().split(',')[0]
+                let time = metadata.modificationTime.toLocaleString().split(' ')[0]
                 if(this.imageObject[time]) {
                   this.imageObject[time].push({
                     name: subFiles[i].name,
@@ -130,7 +130,7 @@ export default {
         }).then(() => {
           window.plus.io.resolveLocalFileSystemURL(window.plus.io.convertAbsoluteFileSystem(this.activePicture.url), (fileEntry) => {
             fileEntry.remove(() => {
-              this.imageObject[this.activePicture.time.split(',')[0]].splice(this.activePicture.index, 1);
+              this.imageObject[this.activePicture.time.split(' ')[0]].splice(this.activePicture.index, 1);
               this.$forceUpdate();
             });
           });
