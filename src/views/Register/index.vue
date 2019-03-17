@@ -187,7 +187,6 @@ export default {
         if(res && res.data.code == 0) {
           this.$toast.success('注册成功，请登陆');
           this.skipNewPath('login');
-          window.$storage.set('isReg', true, 50 * 365 * 24 * 3600 * 1000);
         }
       });
     },

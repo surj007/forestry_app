@@ -280,7 +280,7 @@
       </div>
 
       <div class="btn-pic change-button-background">
-        <van-button size="large" round type="primary" @click="submit" v-if="$store.getters.oCompanyInfo.status === 2 || $store.getters.oCompanyInfo.status === 3">提交企业信息</van-button>
+        <van-button size="large" round type="primary" @click="submit" v-if="$store.getters.oCompanyInfo.status === 2 || $store.getters.oCompanyInfo.status === 3 || $window.$storage.get('isReg')">提交企业信息</van-button>
         <van-button size="large" round type="primary" @click="$router.push({name: 'setEmployee'})" v-if="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4">查看业务员信息</van-button>
       </div>
     </div>

@@ -97,6 +97,7 @@ export default {
   methods: {
     finishReg() {
       window.$storage.del('isReg');
+      this.$router.push({name: 'applyRecord'});
     }
   }
 }

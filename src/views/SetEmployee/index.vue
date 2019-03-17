@@ -38,7 +38,7 @@
     </div>
 
     <div class="set-employee-btn change-button-background">
-      <van-button size="large" round type="primary" @click="submit" v-if="$store.getters.oCompanyInfo.status === 2 || $store.getters.oCompanyInfo.status === 3">提交</van-button>
+      <van-button size="large" round type="primary" @click="submit" v-if="$store.getters.oCompanyInfo.status === 2 || $store.getters.oCompanyInfo.status === 3 || $window.$storage.get('isReg')">提交</van-button>
       <van-button size="large" round type="primary" @click="$router.push({name: 'companySetting'})" v-if="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4">返回</van-button>
     </div>
   </div>

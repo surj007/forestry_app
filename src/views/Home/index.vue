@@ -94,6 +94,7 @@ export default {
     else {
       await this.$store.dispatch('getCompanyInfo', this);
       if(!this.$store.getters.oCompanyInfo.id && window.$storage.get('user') && window.$storage.get('user').roles[0].id == 1) {
+        window.$storage.set('isReg', true, 50 * 365 * 24 * 3600 * 1000);
         this.$router.push({name: 'setCompanyInfo'});
       }
     }
