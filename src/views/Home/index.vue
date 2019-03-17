@@ -108,10 +108,8 @@ export default {
       window.plus.geolocation.getCurrentPosition((position) => {
         let camera = window.plus.camera.getCamera();
         camera.captureImage((capturedFile) => {
-          window.plus.geolocation.getCurrentPosition((position) => {
-            window.$storage.merge('picture', {
-              [capturedFile.split('/')[1]]: position.addresses
-            });
+          window.$storage.merge('picture', {
+            [capturedFile.split('/')[1]]: position.addresses
           });
         });
       }, (error) => {

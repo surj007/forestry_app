@@ -358,7 +358,12 @@ export default {
       window.history.back();
     },
     skipNewPath() {
-      this.$router.push('certUpload');
+      this.$router.push({
+        name: 'certUpload',
+        query: {
+          id: this.formData.id
+        }
+      });
     }
   }
 }

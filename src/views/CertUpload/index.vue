@@ -70,7 +70,7 @@
         </p>
         <van-cell-group class="van-hairline--bottom" :border="false" style="padding-bottom: 26px;">
           <div style="display: flex;flex-wrap: wrap;">
-            <upload-picture v-for="(item, index) in formData.picture_url" :key="index" :index="index"
+            <upload-picture v-for="(item, index) in formData.picture_url" :key="index" :index="index" uploadType="cert"
             :sPictureUrl="item" :fSetPicturUrl="setNoticePictureUrl" style="margin-left: 10px;margin-bottom: 10px;" />
           </div>
         </van-cell-group>
@@ -97,14 +97,31 @@ export default {
     return {
       formData: {
         picture_url: [''],
-        picture_location: ['']
+        picture_location: [''],
+        picture_time: ['']
       }
     }
   },
   methods: {
     submit() {
       if(this.validate()) {
+        let data = {
+          picture_url: this.formData.picture_url.toString(),
+          picture_location: this.formData.picture_location.toString(),
+          picture_time: this.formData.picture_time.toString(),
+          id: this.$route.query.id
+        };
 
+        this.$http({
+          url: '/cert/addPlantCertPicture',
+          method: 'POST',
+          data
+        }).then((res) => {
+          if(res && res.data.code === 0) {
+            this.$toast.success('上传车辆运输图片成功');
+            this.$router.push({name: 'applyRecord'});
+          }
+        });
       }
     },
     validate() {
@@ -123,9 +140,10 @@ export default {
         this.formData.picture_location.splice(this.formData.picture_location.length - 1, 1);
       }
     },
-    setNoticePictureUrl(index, url, location) {
+    setNoticePictureUrl(index, url, time, name) {
       this.$set(this.formData.picture_url, index, url);
-      this.$set(this.formData.picture_location, index, location);
+      this.formData.picture_time[index] = time;
+      this.formData.picture_location[index] = window.$storage.get('picture')[name];
     }
   }
 }

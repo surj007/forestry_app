@@ -99,6 +99,7 @@ export default {
         break;
       }
       case 2: {
+        this.file = this.data.picture_url.split(',').length;
         break;
       }
       default: {

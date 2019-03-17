@@ -33,7 +33,10 @@
 <template>
   <div class="my-gallery">
     <van-popup class="my-gallery-popup" v-model="value" position="right" :overlay="false">
-      <van-nav-bar title="相册" left-arrow right-text="删除" @click-left="$emit('input', false)" @click-right="delPicture" fixed style="position: fixed;top: 0;" />
+      <van-nav-bar title="相册" left-arrow right-text="删除" @click-left="$emit('input', false)" 
+      @click-right="delPicture" fixed style="position: fixed;top: 0;" v-if="from === 'navbar'" />
+      <van-nav-bar title="相册" left-arrow right-text="上传" @click-left="close" 
+      @click-right="upload" fixed style="position: fixed;top: 0;" v-else />
 
       <div class="my-gallery-content">
         <div v-for="(item, index) in imageObject" :key="index">
@@ -54,10 +57,21 @@ export default {
   created() {
     this.getGalleryImage();
   },
+  watch: {
+    value(newVal, oldVal) {
+      if(newVal) {
+        this.activePicture = {};
+      }
+    }
+  },
   props: {
     value: {
       type: Boolean,
       required: true
+    },
+    from: {
+      type: String,
+      default: 'navbar'
     }
   },
   data() {
@@ -96,13 +110,32 @@ export default {
         });
       });
     },
+    upload() {
+      if(this.activePicture.name) {
+        this.$emit('upload', this.activePicture);
+      }
+    },
+    close() {
+      this.$nextTick(() => {
+        this.$emit('input', false);
+      });
+    },
     delPicture() {
       if(this.activePicture.name) {
-        window.plus.io.resolveLocalFileSystemURL(window.plus.io.convertAbsoluteFileSystem(this.activePicture.url), (fileEntry) => {
-          fileEntry.remove(() => {
-            this.imageObject[this.activePicture.time.split(',')[0]].splice(this.activePicture.index, 1);
-            this.$forceUpdate();
+        this.$dialog.confirm({
+          title: '确认删除',
+          message: '是否删除选中照片',
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(() => {
+          window.plus.io.resolveLocalFileSystemURL(window.plus.io.convertAbsoluteFileSystem(this.activePicture.url), (fileEntry) => {
+            fileEntry.remove(() => {
+              this.imageObject[this.activePicture.time.split(',')[0]].splice(this.activePicture.index, 1);
+              this.$forceUpdate();
+            });
           });
+        }).catch(() => {
+          
         });
       }
     },

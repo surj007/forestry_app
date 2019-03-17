@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { delAllInfo } from '../service/auth';
 
-window.baseUrl = 'http://127.0.0.1';
+window.baseUrl = 'http://192.168.0.106';
 
 const request = axios.create({
   baseURL: `${window.baseUrl}:8089`,
