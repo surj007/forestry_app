@@ -79,7 +79,15 @@ export default {
       }).then((res) => {
         if(res && res.data.code == 0) {
           this.employeeInit = JSON.parse(JSON.stringify(res.data.data));
-          this.employee = res.data.data;
+          this.employee = res.data.data || [
+            {
+              name: '',
+              username: '',
+              socialSecurityPic: '',
+              cardFrontPic: '',
+              cardOppositePic: ''
+            }
+          ];
         }
       });
     },
@@ -116,18 +124,20 @@ export default {
       }
     },
     handleDelCard(index) {
-      if(this.employee.length != 1) {
+      if(this.employee.length != 1 && this.$store.getters.oCompanyInfo.status !== 1 && this.$store.getters.oCompanyInfo.status !== 4) {
         this.employee.splice(index, 1);
       }
     },
     addEmployee() {
-      this.employee.push({
-        name: '',
-        username: '',
-        socialSecurityPic: '',
-        cardFrontPic: '',
-        cardOppositePic: ''
-      });
+      if (this.$store.getters.oCompanyInfo.status !== 1 && this.$store.getters.oCompanyInfo.status !== 4) {
+        this.employee.push({
+          name: '',
+          username: '',
+          socialSecurityPic: '',
+          cardFrontPic: '',
+          cardOppositePic: ''
+        });
+      }
     }
   }
 }

@@ -66,7 +66,9 @@
       <van-row style="width: 100%">
         <van-col span="6">
           <div class="apply-card-main__th">提交日期</div>
-          <div class="apply-card-main__td">{{ `${new Date(data.create_time).getMonth() + 1}月${new Date(data.create_time).getDate()}日` }}</div>
+          <div class="apply-card-main__td">
+            {{ `${new Date(data.create_time.replace(/-/g, "/")).getMonth() + 1}月${new Date(data.create_time.replace(/-/g, "/")).getDate()}日` }}
+          </div>
         </van-col>
 
         <van-col span="6">
@@ -102,7 +104,7 @@ export default {
         break;
       }
       case 2: {
-        this.file = this.data.picture_url.split(',').length;
+        this.file = this.data.picture_url ? this.data.picture_url.split(',').length : 0;
         break;
       }
       default: {

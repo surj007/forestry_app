@@ -99,50 +99,50 @@
       <p class="title">企业基本信息</p>
 
       <van-cell-group class="van-hairline--bottom" :border="false">
-        <van-field label="企业名称" placeholder="请输入企业名称" required 
+        <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" label="企业名称" placeholder="请输入企业名称" required 
         v-model="oFormData.name" :error-message="oErrMsg.nameErrMsg" @blur="handleInputBlur('name', 'string')">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="企业法人" placeholder="请输入法人姓名" required v-model="oFormData.corporation" 
+        <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" label="企业法人" placeholder="请输入法人姓名" required v-model="oFormData.corporation" 
         :error-message="oErrMsg.corporationErrMsg" @blur="handleInputBlur('corporation', 'string')">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="信用代码" placeholder="请输入信用代码" required v-model="oFormData.code" 
+        <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" label="信用代码" placeholder="请输入信用代码" required v-model="oFormData.code" 
         :error-message="oErrMsg.codeErrMsg" @blur="handleInputBlur('code', 'string')">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="联系电话" placeholder="请输入联系电话" required v-model="oFormData.phone" 
+        <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" label="联系电话" placeholder="请输入联系电话" required v-model="oFormData.phone" 
         :error-message="oErrMsg.phoneErrMsg" @blur="handleInputBlur('phone', 'string')">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="企业地址" placeholder="请输入企业地址" required v-model="oFormData.address" 
+        <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" label="企业地址" placeholder="请输入企业地址" required v-model="oFormData.address" 
         :error-message="oErrMsg.addressErrMsg" @blur="handleInputBlur('address', 'string')">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="仓储地点" placeholder="请输入仓储地点，以逗号分隔" required type="textarea" rows="2" v-model="oFormData.store"
+        <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" label="仓储地点" placeholder="请输入仓储地点，以逗号分隔" required type="textarea" rows="2" v-model="oFormData.store"
         :error-message="oErrMsg.storeErrMsg" @blur="handleInputBlur('store', 'string')">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="企业类型" required disabled :error-message="oErrMsg.companyTypeErrMsg" @blur="handleInputBlur('companyType', 'array')">
-          <van-checkbox-group slot="button" v-model="oFormData.companyType">
+        <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" label="企业类型" required disabled :error-message="oErrMsg.companyTypeErrMsg" @blur="handleInputBlur('companyType', 'array')">
+          <van-checkbox-group :disabled="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" slot="button" v-model="oFormData.companyType">
             <template v-for="(item, index) in $store.getters.oBasicInfo['企业类型'].info">
               <van-checkbox :key="index" style="margin-bottom: 7px;" :name="item" shape="square">{{ item }}</van-checkbox>
             </template>
@@ -151,8 +151,8 @@
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="原料来源" required disabled :error-message="oErrMsg.sourceErrMsg" @blur="handleInputBlur('source', 'array')">
-          <van-checkbox-group slot="button" v-model="oFormData.source">
+        <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" label="原料来源" required disabled :error-message="oErrMsg.sourceErrMsg" @blur="handleInputBlur('source', 'array')">
+          <van-checkbox-group :disabled="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" slot="button" v-model="oFormData.source">
             <template v-for="(item, index) in $store.getters.oBasicInfo['原料来源'].info">
               <van-checkbox :key="index" style="margin-bottom: 7px;" :name="item" shape="square">{{ item }}</van-checkbox>
             </template>
@@ -160,17 +160,17 @@
         </van-field>
       </van-cell-group>
 
-      <van-checkbox class="checkbox-label" shape="square" v-model="oFormData.outCityCompany">
+      <van-checkbox :disabled="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" class="checkbox-label" shape="square" v-model="oFormData.outCityCompany">
         省（市）外企业主要：
       </van-checkbox>
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field placeholder="请输入企业名称，以逗号分隔" type="textarea" rows="2" v-model="oFormData.outCityCompanyName">
+        <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" placeholder="请输入企业名称，以逗号分隔" type="textarea" rows="2" v-model="oFormData.outCityCompanyName">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="（木材）原料主要品种" placeholder="请输入原料主要品种，以逗号分隔" 
+        <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" label="（木材）原料主要品种" placeholder="请输入原料主要品种，以逗号分隔" 
         required type="textarea" rows="2" v-model="oFormData.kind" 
         :error-message="oErrMsg.kindErrMsg" @blur="handleInputBlur('kind', 'string')">
           <span slot="button" style="color: transparent;">1</span>
@@ -182,14 +182,14 @@
       <van-row>
         <van-col span="12">
           <van-cell-group class="van-hairline--bottom" :border="false">
-            <van-field label="台锯数量" placeholder="数量" v-model="oFormData.saw">
+            <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" label="台锯数量" placeholder="数量" v-model="oFormData.saw">
               <span slot="button" style="color: #333333;">套</span>
             </van-field>
           </van-cell-group>
         </van-col>
         <van-col span="12">
           <van-cell-group class="van-hairline--bottom" :border="false">
-            <van-field label="日生产量 " placeholder="生产量" v-model="oFormData.sawOutput">
+            <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" label="日生产量 " placeholder="生产量" v-model="oFormData.sawOutput">
               <span slot="button" style="color: #333333;">m³</span>
             </van-field>
           </van-cell-group>
@@ -199,14 +199,14 @@
       <van-row>
         <van-col span="12">
           <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-            <van-field label="其他设备" placeholder="数量" v-model="oFormData.other">
+            <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" label="其他设备" placeholder="数量" v-model="oFormData.other">
               <span slot="button" style="color: #333333;">套</span>
             </van-field>
           </van-cell-group>
         </van-col>
         <van-col span="12">
           <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-            <van-field label="日生产量 " placeholder="生产量" v-model="oFormData.otherOutput">
+            <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" label="日生产量 " placeholder="生产量" v-model="oFormData.otherOutput">
               <span slot="button" style="color: #333333;">m³</span>
             </van-field>
           </van-cell-group>
@@ -214,7 +214,7 @@
       </van-row>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="主要产品" placeholder="请输入主要产品" v-model="oFormData.product">
+        <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" label="主要产品" placeholder="请输入主要产品" v-model="oFormData.product">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
@@ -222,13 +222,13 @@
       <p class="title">产品销售</p>
 
       <van-cell-group class="van-hairline--bottom" :border="false">
-        <van-field label="主要销售区域" placeholder="请输入销售区域名称" v-model="oFormData.saleArea">
+        <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" label="主要销售区域" placeholder="请输入销售区域名称" v-model="oFormData.saleArea">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field label="月销售量" placeholder="请输入销售量" v-model="oFormData.saleMount">
+        <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" label="月销售量" placeholder="请输入销售量" v-model="oFormData.saleMount">
           <span slot="button" style="color: #333333;">m³</span>
         </van-field>
       </van-cell-group>
@@ -236,7 +236,7 @@
       <p class="title">备注</p>
 
       <van-cell-group class="van-hairline--bottom" :border="false" style="margin-top: 1px;">
-        <van-field placeholder="请输入备注" type="textarea" rows="2" v-model="oFormData.remark">
+        <van-field :readonly="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4" placeholder="请输入备注" type="textarea" rows="2" v-model="oFormData.remark">
           <span slot="button" style="color: transparent;">1</span>
         </van-field>
       </van-cell-group>
@@ -281,7 +281,15 @@
 
       <div class="btn-pic change-button-background">
         <van-button size="large" round type="primary" @click="submit" v-if="$store.getters.oCompanyInfo.status === 2 || $store.getters.oCompanyInfo.status === 3 || $window.$storage.get('isReg')">提交企业信息</van-button>
-        <van-button size="large" round type="primary" @click="$router.push({name: 'setEmployee'})" v-if="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4">查看业务员信息</van-button>
+        <van-button 
+          size="large" 
+          round 
+          type="primary" 
+          @click="$router.push({name: 'setEmployee'})" 
+          v-if="$store.getters.oCompanyInfo.status === 1 || $store.getters.oCompanyInfo.status === 4"
+        >
+            查看业务员信息
+          </van-button>
       </div>
     </div>
   </div>

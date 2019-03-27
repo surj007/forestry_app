@@ -63,17 +63,17 @@
 
     <div class="home-card home-card--first">
       <p class="home-card__title">原木类开证</p>
-      <div class="home-card__btn flex-center-xy" @click="$router.push({name: 'woodCert'})">申请</div>
+      <div class="home-card__btn flex-center-xy" @click="skipNewUrl('woodCert')">申请</div>
     </div>
 
     <div class="home-card home-card--second">
       <p class="home-card__title">板材类开证</p>
-      <div class="home-card__btn flex-center-xy" @click="$router.push({name: 'boardCert'})">申请</div>
+      <div class="home-card__btn flex-center-xy" @click="skipNewUrl('boardCert')">申请</div>
     </div>
 
     <div class="home-card home-card--third">
       <p class="home-card__title">木材运输证与植物检疫申请</p>
-      <div class="home-card__btn flex-center-xy" @click="$router.push({name: 'plantCert'})">申请</div>
+      <div class="home-card__btn flex-center-xy" @click="skipNewUrl('plantCert')">申请</div>
     </div>
 
     <van-tabbar v-model="active">
@@ -117,7 +117,15 @@ export default {
         console.warn('get position err: ' + error.message);
         this.$toast('请开启定位功能后，再进行拍照');
       });
-    }
+    },
+    skipNewUrl (path) {
+      if (this.$store.getters.oCompanyInfo.status == 2) {
+        this.$router.push({name: path})
+      }
+      else {
+        this.$toast('请在企业信息通过审核后再办理此项业务');
+      }
+    },
   }
 }
 </script>
