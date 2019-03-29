@@ -108,7 +108,7 @@ export default {
         let data = {
           picture_url: this.formData.picture_url.toString(),
           picture_location: this.formData.picture_location.toString(),
-          picture_time: this.formData.picture_time.toString(),
+          picture_time: this.formData.picture_time.join('@'),
           id: this.$route.query.id
         };
 

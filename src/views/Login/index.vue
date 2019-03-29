@@ -104,7 +104,11 @@
 <script>
 export default {
   name: 'Login',
+  mounted () {
+    document.body.addEventListener('focusout', this.scroll);
+  },
   beforeDestroy() {
+    document.body.removeEventListener('focusout', this.scroll);
     clearInterval(this.nTimer);
   },
   data() {
@@ -125,6 +129,12 @@ export default {
     }
   },
   methods: {
+    scroll () {
+      let userAgent = window.plus.navigator.getUserAgent().toLowerCase();
+      if (userAgent.indexOf('iphone') >= 0 || userAgent.indexOf('ipad') >= 0) { 
+        document.body.scrollTop = document.body.scrollHeight; 
+      }
+    },
     async loginSubmit() {
       let bFlag = false;
       if(this.oLoginFormData.sUsername == '') {

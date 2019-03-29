@@ -147,7 +147,12 @@
 
       <van-cell-group class="van-hairline--bottom change-cell__value change-field__error-message change-cell-title-width-default" :border="false">
         <van-field :readonly="$route.params.create_time" label="收货单位详细地址" disabled>
-          <van-radio-group v-model="formData.receive_address_type" slot="button" class="flex-center-y">
+          <van-radio-group 
+            :disabled="$route.params.create_time"
+            v-model="formData.receive_address_type" 
+            slot="button" 
+            class="flex-center-y"
+          >
             <van-radio :name="0">省内</van-radio>
             <van-radio :name="1" style="margin-left: 10px;">省外</van-radio>
           </van-radio-group>
